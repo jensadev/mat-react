@@ -1,12 +1,29 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+// import AuthService from '../services/auth-service';
+
 function Nav() {
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
   const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
+  // const [currentUser, setCurrentUser] = useState(undefined);
+
+  // useEffect(() => {
+  //   const user = AuthService.getCurrentUser();
+
+  //   if (user) {
+  //     setCurrentUser(user);
+  //     // setShowModeratorBoard(user.roles.includes('ROLE_MODERATOR'));
+  //     // setShowAdminBoard(user.roles.includes('ROLE_ADMIN'));
+  //   }
+  // }, []);
+
+  // const signOut = () => {
+  //   AuthService.signOut();
+  // };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-transparent">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-transparent">
       <div className="container-fluid">
         <Link className="navbar-brand" to={'/'}>
           Navbar
@@ -33,6 +50,13 @@ function Nav() {
             </li>
           </ul>
         </div>
+        <ul className="navbar-nav px-3">
+          <li className="nav-item text-nowrap">
+            <form>
+              <button className="btn btn-link">Signout</button>
+            </form>
+          </li>
+        </ul>
       </div>
     </nav>
   );

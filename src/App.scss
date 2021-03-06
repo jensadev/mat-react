@@ -1,0 +1,68 @@
+$blue:    #0d6efd;
+$indigo:  #6610f2;
+$purple:  #6f42c1;
+$pink:    #d63384;
+$red:     #dc3545;
+$orange:  #fd7e14;
+$yellow:  #ffc107;
+$green:   #198754;
+$teal:    #20c997;
+$cyan:    #0dcaf0;
+
+$my-red: #F83E63;
+$my-orange: #F78661;
+$my-green: #61CE93;
+$my-purple: #A180E9;
+$my-yellow: #FDE6BC;
+// $my-dark: #3C213D;
+$my-dark: #241b35;
+$my-white: #F8F7F9;
+
+$white:    #fff;
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+$black:    #000;
+
+$primary:       $my-red;
+$secondary:     $my-orange;
+$success:       $my-green;
+$info:          $cyan;
+$warning:       $yellow;
+$danger:        $red;
+$light:         $my-white;
+$dark:          $my-dark;
+
+$theme-colors: (
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $light,
+  "dark":       $dark
+);
+
+// $font-family-base: 
+$font-size-base: 1.2rem;
+$line-height-base: 1.5;
+$link-color: $my-dark;
+
+$body-bg: $my-red;
+$body-color: $my-white;
+
+.cls-1{fill: $my-red;}
+.cls-2{fill: $my-white; opacity: .08;}
+.cls-3{fill: $my-white; opacity: .12;}
+.cls-4{fill: $my-white; opacity: .12;}
+.cls-5{fill: $my-white; opacity: .12;}
+
+// Bootstrap and its default variables
+@import "../node_modules/bootstrap/scss/bootstrap";
