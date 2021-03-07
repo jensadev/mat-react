@@ -1,0 +1,44 @@
+.dish-search {
+  input {
+    &:focus {
+      box-shadow: none;
+    }
+  }
+  ul {
+    li {
+      &:first-child {
+        margin-top: .2rem;
+        border-radius: 0.25rem;
+      }
+      &:not(:only-child):first-child {
+        border-bottom-right-radius: 0rem;
+        border-bottom-left-radius: 0rem;
+      }
+      &:not(:only-child):last-child {
+        border-radius: 0.25rem;
+        border-top-right-radius: 0rem;
+        border-top-left-radius: 0rem;
+      }
+      &:hover {
+        color: var(--bs-dark);
+      }
+    }
+  }
+  li {
+    position: relative;
+    cursor: pointer;
+    display: block;
+    border: 1px solid #fc9fb1;
+    height: auto;
+    text-align: left;
+    border-top: none;
+    color:var(--bs-dark);
+    background-color: var(--bs-white);
+    text-transform: none;
+    box-shadow: none;
+    padding: 0.375rem 0.75rem;
+    white-space: normal;
+    word-wrap: normal;
+    color: #6c757d;
+  }
+}

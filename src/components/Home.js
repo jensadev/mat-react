@@ -4,8 +4,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Dashboard from './Dashboard';
+import DishSearch from './DishSearch';
 import Footer from './Footer';
-import MealForm from './MealForm';
 import Nav from './Nav';
 
 function Home() {
@@ -15,7 +15,7 @@ function Home() {
       <Dashboard />
       <main className="container">
         <div className="my-3 box-shadow">
-          <MealForm />
+          <DishSearch />
         </div>
         <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
           <h6 className="border-bottom border-gray pb-2 mb-0">
