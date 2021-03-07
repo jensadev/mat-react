@@ -1,50 +1,21 @@
 import './Home.scss';
-import 'react-datepicker/dist/react-datepicker.css';
 
-import sv from 'date-fns/locale/sv';
-import { registerLocale } from 'react-datepicker';
-registerLocale('sv', sv);
-
-import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Dashboard from './Dashboard';
 import Footer from './Footer';
+import MealForm from './MealForm';
 import Nav from './Nav';
 
 function Home() {
-  const [startDate, setStartDate] = useState(new Date());
-
   return (
     <div className="h-100 d-flex flex-column">
       <Nav />
       <Dashboard />
       <main className="container">
         <div className="my-3 box-shadow">
-          <div className="form-group">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              className="bi bi-search form-control-feedback"
-              viewBox="0 0 16 16">
-              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-            </svg>
-            <input
-              type="text"
-              className="form-control form-control-lg"
-              placeholder="Search"
-              aria-label="Recipient's username"
-              aria-describedby="button-addon2"
-            />
-            <DatePicker
-              locale="sv"
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-            />
-          </div>
+          <MealForm />
         </div>
         <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
           <h6 className="border-bottom border-gray pb-2 mb-0">
