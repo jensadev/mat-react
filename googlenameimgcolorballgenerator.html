@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    img {
+      border-radius: 100%;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    //https://stackoverflow.com/questions/3426404/create-a-hexadecimal-colour-based-on-a-string-with-javascript
+    const stringToColour = (str) => {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+          hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      let colour = '#';
+      for (let i = 0; i < 3; i++) {
+          const value = (hash >> (i * 8)) & 0xFF;
+          colour += ('00' + value.toString(16)).substr(-2);
+      }
+      return colour;
+    }
+
+    const name = 'Jens Andreasson';
+    let canvas = document.createElement('canvas');
+    let ctx = canvas.getContext('2d');
+    canvas.width = 48;
+    canvas.height = 48;
+
+    ctx.fillStyle = stringToColour(name);
+    ctx.fillRect(0,0,48,48);
+
+    ctx.font = '600 32px system-ui';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#fff';
+    ctx.fillText(name[0].toUpperCase(), canvas.width/2, canvas.height/2);
+
+    const image =  canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+
+    console.log(image);
+
+    const imgel = document.createElement('img');
+    imgel.src = image;
+    document.querySelector('body').appendChild(imgel);
+
+
+  </script>
+</body>
+</html>
