@@ -2,78 +2,49 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import sv from 'date-fns/locale/sv';
 import Downshift from 'downshift';
-import React from 'react';
-// import DatePicker from 'react-datepicker';
+import React, { useState } from 'react';
+import DatePicker from 'react-datepicker';
 import { registerLocale } from 'react-datepicker';
 registerLocale('sv', sv);
 import Axios from '../libs/axios';
-import {
-  ArrowIcon,
-  ControllerButton,
-  css,
-  Input,
-  Item,
-  Label,
-  Menu,
-  XIcon
-} from '../libs/shared';
-registerLocale('sv', sv);
 
 function MealForm() {
   const baseEndpoint = 'http://localhost:8080/api/dish/';
-  // const [startDate, setStartDate] = useState(new Date());
+
+  const [startDate, setStartDate] = useState(new Date());
   return (
-    <div
-      {...css({
-        display: 'flex',
-        flexDirection: 'column',
-        marginTop: 50
-      })}>
+    <div className="form-group">
       <Downshift>
         {({
           inputValue,
           getInputProps,
-          getLabelProps,
+          // getLabelProps,
           getMenuProps,
           getItemProps,
-          getToggleButtonProps,
+          // getToggleButtonProps,
           selectedItem,
           highlightedIndex,
-          isOpen,
-          clearSelection
-        }) => {
-          return (
-            <div {...css({ width: 250, margin: 'auto', position: 'relative' })}>
-              <Label {...getLabelProps()}>Select a Github repository</Label>
-              <div {...css({ position: 'relative' })}>
-                <Input
-                  {...getInputProps({
-                    isOpen,
-                    placeholder: 'Search repository'
-                  })}
-                />
-                {selectedItem ? (
-                  <ControllerButton
-                    onClick={clearSelection}
-                    aria-label="clear selection">
-                    <XIcon />
-                  </ControllerButton>
-                ) : (
-                  <ControllerButton {...getToggleButtonProps()}>
-                    <ArrowIcon isOpen={isOpen} />
-                  </ControllerButton>
-                )}
-              </div>
-              <Menu {...getMenuProps({ isOpen })}>
+          isOpen
+          // clearSelection
+        }) => (
+          <div>
+            <div>
+              <input
+                {...getInputProps({
+                  isOpen,
+                  placeholder: 'Search dish'
+                })}
+              />
+            </div>
+            <div>
+              <ul {...getMenuProps({ isOpen })}>
                 {(() => {
                   if (!isOpen) {
                     return null;
                   }
 
                   if (!inputValue) {
-                    return (
-                      <Item disabled>You have to enter a search query</Item>
-                    );
+                    return <li disabled>You have to enter a search query</li>;
                   }
 
                   return (
@@ -81,19 +52,19 @@ function MealForm() {
                       {({ loading, error, data: { dishes = [] } = {} }) => {
                         console.table(dishes);
                         if (loading) {
-                          return <Item disabled>Loading...</Item>;
+                          return <li disabled>Loading...</li>;
                         }
 
                         if (error) {
-                          return <Item disabled>Error! ${error}</Item>;
+                          return <li disabled>Error! ${error}</li>;
                         }
 
                         if (!dishes.length) {
-                          return <Item disabled>No repositories found</Item>;
+                          return <li disabled>No repositories found</li>;
                         }
 
                         return dishes.map(({ id, name: item }, index) => (
-                          <Item
+                          <li
                             key={id}
                             {...getItemProps({
                               item,
@@ -102,24 +73,24 @@ function MealForm() {
                               isSelected: selectedItem === item
                             })}>
                             {item}
-                          </Item>
+                          </li>
                         ));
                       }}
                     </Axios>
                   );
                 })()}
-              </Menu>
+              </ul>
             </div>
-          );
-        }}
+          </div>
+        )}
       </Downshift>
+      <DatePicker
+        locale="sv"
+        selected={startDate}
+        onChange={(date) => setStartDate(date)}
+      />
     </div>
   );
-  // <DatePicker
-  //   locale="sv"
-  //   selected={startDate}
-  //   onChange={(date) => setStartDate(date)}
-  // />
 }
 
 export default MealForm;
