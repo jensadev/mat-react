@@ -16,14 +16,7 @@ function MealForm() {
   return (
     <div className="mb-3">
       <Downshift>
-        {({
-          inputValue,
-          getInputProps,
-          getLabelProps,
-          getMenuProps,
-          getItemProps,
-          isOpen
-        }) => {
+        {({ inputValue, getLabelProps, getItemProps, isOpen }) => {
           return (
             <div>
               <label
@@ -31,16 +24,14 @@ function MealForm() {
                 className="form-label visually-hidden">
                 Select a dish or enter a new one:
               </label>
-              <input
-                className="form-control  text-dark"
-                list="downshift-1-menu"
-                id="dishlist"
-                placeholder="Type to search..."
-                {...getInputProps({
-                  isOpen
-                })}
-              />
-              <datalist {...getMenuProps({ isOpen })}>
+              <div className="input-group">
+                <input
+                  className="form-control  text-dark"
+                  list="dishlist"
+                  placeholder="Type to search..."
+                />
+              </div>
+              <datalist id="dishlist">
                 {(() => {
                   console.log(isOpen);
                   if (!isOpen) {
@@ -51,8 +42,7 @@ function MealForm() {
                       {({ loading, error, data: { dishes = [] } = {} }) => {
                         console.table(dishes);
                         if (loading) {
-                          console.log('loading');
-                          return null;
+                          return <option value="Loading..." />;
                         }
 
                         if (error) {
@@ -64,13 +54,19 @@ function MealForm() {
                           return null;
                         }
 
-                        return dishes.map(({ id, name: item }, index) => (
-                          <option
-                            key={id}
-                            value={item}
-                            {...getItemProps({ index, item })}
-                          />
-                        ));
+                        return dishes.map(
+                          ({ id, name: item }, index) =>
+                            (
+                              <option
+                                key={id}
+                                value={item}
+                                {...getItemProps({
+                                  index,
+                                  item
+                                })}
+                              />
+                            ) ?? null
+                        );
                       }}
                     </Axios>
                   );
