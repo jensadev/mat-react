@@ -1,21 +1,49 @@
 import './Home.scss';
+import 'react-datepicker/dist/react-datepicker.css';
 
-import React from 'react';
+import sv from 'date-fns/locale/sv';
+import React, { useState } from 'react';
+import DatePicker from 'react-datepicker';
+import { registerLocale } from 'react-datepicker';
 import { Link } from 'react-router-dom';
 
+import AuthService from '../services/auth-service';
 import Dashboard from './Dashboard';
 import DishSearch from './DishSearch';
 import Footer from './Footer';
 import Nav from './Nav';
 
+registerLocale('sv', sv);
+
 function Home() {
+  const [startDate, setStartDate] = useState(new Date());
+
+  console.table(AuthService.getCurrentUser());
+
   return (
     <div className="h-100 d-flex flex-column">
       <Nav />
       <Dashboard />
-      <main className="container">
-        <div className="my-3 box-shadow">
-          <DishSearch />
+      <main className="container mt-3">
+        <div className="my-3">
+          <form>
+            <div className=" row ">
+              <div className="col-sm-7">
+                <DishSearch />
+              </div>
+              <div className="col-sm-3">
+                <DatePicker
+                  className="form-control form-control-lg text-dark"
+                  locale="sv"
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                />
+              </div>
+              <div className="col-sm-2">
+                <button className="btn btn-lg btn-dark">Add meal</button>
+              </div>
+            </div>
+          </form>
         </div>
         <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
           <h6 className="border-bottom border-gray pb-2 mb-0">
@@ -97,7 +125,7 @@ function Home() {
           </nav>
         </div>
 
-        <div className="my-3 p-3 bg-white rounded box-shadow">
+        <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
           <h6 className="border-bottom border-gray pb-2 mb-0">Suggestions</h6>
           <div className="media text-muted pt-3">
             <img
