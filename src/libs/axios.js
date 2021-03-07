@@ -35,8 +35,7 @@ class Axios extends React.Component {
       const { url, method = 'get', params, data } = this.props;
 
       axios({
-        baseURL: url,
-        url: params.search.trim(),
+        url,
         method,
         params,
         data,

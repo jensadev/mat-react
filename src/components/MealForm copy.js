@@ -72,7 +72,7 @@ function MealForm() {
                               isActive: highlightedIndex === index,
                               isSelected: selectedItem === item
                             })}>
-                            {item}
+                            {name}
                           </li>
                         ));
                       }}
