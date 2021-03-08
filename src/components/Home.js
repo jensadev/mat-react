@@ -2,23 +2,76 @@ import './Home.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import sv from 'date-fns/locale/sv';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { registerLocale } from 'react-datepicker';
 import { Link } from 'react-router-dom';
 
 import AuthService from '../services/auth-service';
+import MealsDataService from '../services/meals.service';
 import Dashboard from './Dashboard';
 import DishSearch from './DishSearch';
 import Footer from './Footer';
 import Nav from './Nav';
-
 registerLocale('sv', sv);
 
 function Home() {
   const [startDate, setStartDate] = useState(new Date());
+  const [meals, setMeals] = useState([]);
+  // const [mounted, setMounted] = useState(true);
+  const user = JSON.parse(
+    atob(AuthService.getCurrentUser().accessToken.split('.')[1])
+  );
 
-  console.table(AuthService.getCurrentUser());
+  useEffect(() => {
+    MealsDataService.getAllUser(user.data.id).then(
+      (response) => {
+        console.log(response);
+        setMeals(response.data);
+      },
+      (error) => {
+        const _content =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
+
+        setMeals(_content);
+      }
+    );
+  }, [user.data.id]);
+
+  // useEffect(() => {
+  //   if (meals.length) {
+  //     return;
+  //   }
+  //   MealsDataService.getAllUser(user.data.id).then((response) => {
+  //     if (mounted) {
+  //       setMeals(response);
+  //     }
+  //   });
+  //   return () => setMounted(!mounted);
+  // });
+
+  // useEffect(() => {
+  //   let mounted = true;
+  //   const getUsersMeals = () => {
+  //     MealsDataService.getAllUser(user.data.id)
+  //       .then((response) => {
+  //         if (mounted) {
+  //           console.log(response.data);
+  //           setMeals(response.data);
+  //         }
+  //       })
+  //       .catch((e) => {
+  //         console.log(e);
+  //       });
+  //     return (mounted = false);
+  //   };
+  // });
+
+  // meals = getUsersMeals();
+  // console.log('hej');
+  // console.table(meals);
 
   return (
     <div className="h-100 d-flex flex-column">
@@ -49,7 +102,12 @@ function Home() {
           <h6 className="border-bottom border-gray pb-2 mb-0">
             Recent updates
           </h6>
-          <div className="d-flex align-items-start text-muted pt-3">
+          <ul>
+            {meals.map((item) => (
+              <li key={item.id}>{item.dish}</li>
+            ))}
+          </ul>
+          {/* <div className="d-flex align-items-start text-muted pt-3">
             <img
               src="https://via.placeholder.com/32/007bff"
               alt=""
@@ -89,7 +147,7 @@ function Home() {
               tellus ac cursus commodo, tortor mauris condimentum nibh, ut
               fermentum massa justo sit amet risus.
             </p>
-          </div>
+          </div> */}
           <nav className="pt-3" aria-label="Page navigation example">
             <ul className="pagination justify-content-center">
               <li className="page-item disabled">
