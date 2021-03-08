@@ -1,0 +1,44 @@
+.DayPickerInput-Overlay {
+  top: .2rem !important;
+  background: var(--bs-white) !important;
+  border-radius: 0.25rem !important;
+}
+
+.DayPicker-NavButton {
+  background-size: 100% !important;
+}
+
+.DayPicker-NavButton--prev {
+  margin-right: 1.5em;
+  background-image: url("./images/caret-left-fill-dark.svg") !important;
+  }
+
+.DayPicker-NavButton--next {
+  background-image: url("./images/caret-right-fill-dark.svg") !important;
+}
+
+.DayPicker-Day {
+  border-radius: 0 !important;
+}
+
+.DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside) {
+  background-image: url("./images/hexagon-fill-dark.svg") !important;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-color: transparent !important;
+  color: var(--bs-white) !important;  
+}
+
+.DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-color: transparent !important;
+  background-image: url("./images/hexagon-fill-primary.svg") !important;
+  color: var(--bs-white) !important;
+}
+
+.DayPickerInput {
+  width: 100% !important;
+}

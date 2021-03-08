@@ -1,20 +1,13 @@
 import './Home.scss';
-import 'react-day-picker/lib/style.css';
-import 'moment/locale/sv';
 
 import React, { useEffect, useState } from 'react';
-import DayPickerInput from 'react-day-picker/DayPickerInput';
-import MomentLocaleUtils, {
-  formatDate,
-  parseDate
-} from 'react-day-picker/moment';
 import { Link } from 'react-router-dom';
 
 import AuthService from '../services/auth-service';
 import MealsDataService from '../services/meals.service';
 import Dashboard from './Dashboard';
-import DishSearch from './DishSearch';
 import Footer from './Footer';
+import MealForm from './MealForm';
 import MealList from './MealList';
 import Nav from './Nav';
 
@@ -47,32 +40,7 @@ function Home() {
       <Dashboard />
       <main className="container mt-3">
         <div className="my-3">
-          <form>
-            <div className=" row ">
-              <div className="col-sm-7">
-                <DishSearch />
-              </div>
-              <div className="col-sm-3">
-                <DayPickerInput
-                  inputProps={{
-                    className: 'form-control form-control-lg text-dark'
-                  }}
-                  formatDate={formatDate}
-                  parseDate={parseDate}
-                  format="LL"
-                  placeholder={`${formatDate(new Date(), 'LL', 'it')}`}
-                  dayPickerProps={{
-                    className: 'rounded box-shadow text-dark',
-                    locale: 'sv',
-                    localeUtils: MomentLocaleUtils
-                  }}
-                />
-              </div>
-              <div className="col-sm-2">
-                <button className="btn btn-lg btn-dark">Add meal</button>
-              </div>
-            </div>
-          </form>
+          <MealForm />
         </div>
         <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
           <h6 className="border-bottom border-gray pb-2 mb-0">
@@ -80,14 +48,26 @@ function Home() {
           </h6>
           <MealList meals={meals} />
           <nav className="pt-3" aria-label="Page navigation example">
-            <ul className="pagination justify-content-center">
+            <ul className="pagination justify-content-center mb-2">
               <li className="page-item disabled">
                 <Link
                   className="page-link"
                   to="#"
                   tabIndex="-1"
+                  aria-label="Previous"
                   aria-disabled="true">
-                  Previous
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    className="mb-1"
+                    viewBox="0 0 16 16">
+                    <path
+                      fillRule="evenodd"
+                      d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+                    />
+                  </svg>
                 </Link>
               </li>
               <li className="page-item">
@@ -106,8 +86,19 @@ function Home() {
                 </Link>
               </li>
               <li className="page-item">
-                <Link className="page-link" to="#">
-                  Next
+                <Link className="page-link" to="#" aria-label="Next">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    className="mb-1"
+                    viewBox="0 0 16 16">
+                    <path
+                      fillRule="evenodd"
+                      d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+                    />
+                  </svg>
                 </Link>
               </li>
             </ul>
