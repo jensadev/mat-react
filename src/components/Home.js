@@ -1,10 +1,13 @@
 import './Home.scss';
-import 'react-datepicker/dist/react-datepicker.css';
+import 'react-day-picker/lib/style.css';
+import 'moment/locale/sv';
 
-import sv from 'date-fns/locale/sv';
 import React, { useEffect, useState } from 'react';
-import DatePicker from 'react-datepicker';
-import { registerLocale } from 'react-datepicker';
+import DayPickerInput from 'react-day-picker/DayPickerInput';
+import MomentLocaleUtils, {
+  formatDate,
+  parseDate
+} from 'react-day-picker/moment';
 import { Link } from 'react-router-dom';
 
 import AuthService from '../services/auth-service';
@@ -12,13 +15,11 @@ import MealsDataService from '../services/meals.service';
 import Dashboard from './Dashboard';
 import DishSearch from './DishSearch';
 import Footer from './Footer';
+import MealList from './MealList';
 import Nav from './Nav';
-registerLocale('sv', sv);
 
 function Home() {
-  const [startDate, setStartDate] = useState(new Date());
   const [meals, setMeals] = useState([]);
-  // const [mounted, setMounted] = useState(true);
   const user = JSON.parse(
     atob(AuthService.getCurrentUser().accessToken.split('.')[1])
   );
@@ -40,39 +41,6 @@ function Home() {
     );
   }, [user.data.id]);
 
-  // useEffect(() => {
-  //   if (meals.length) {
-  //     return;
-  //   }
-  //   MealsDataService.getAllUser(user.data.id).then((response) => {
-  //     if (mounted) {
-  //       setMeals(response);
-  //     }
-  //   });
-  //   return () => setMounted(!mounted);
-  // });
-
-  // useEffect(() => {
-  //   let mounted = true;
-  //   const getUsersMeals = () => {
-  //     MealsDataService.getAllUser(user.data.id)
-  //       .then((response) => {
-  //         if (mounted) {
-  //           console.log(response.data);
-  //           setMeals(response.data);
-  //         }
-  //       })
-  //       .catch((e) => {
-  //         console.log(e);
-  //       });
-  //     return (mounted = false);
-  //   };
-  // });
-
-  // meals = getUsersMeals();
-  // console.log('hej');
-  // console.table(meals);
-
   return (
     <div className="h-100 d-flex flex-column">
       <Nav />
@@ -85,11 +53,19 @@ function Home() {
                 <DishSearch />
               </div>
               <div className="col-sm-3">
-                <DatePicker
-                  className="form-control form-control-lg text-dark"
-                  locale="sv"
-                  selected={startDate}
-                  onChange={(date) => setStartDate(date)}
+                <DayPickerInput
+                  inputProps={{
+                    className: 'form-control form-control-lg text-dark'
+                  }}
+                  formatDate={formatDate}
+                  parseDate={parseDate}
+                  format="LL"
+                  placeholder={`${formatDate(new Date(), 'LL', 'it')}`}
+                  dayPickerProps={{
+                    className: 'rounded box-shadow text-dark',
+                    locale: 'sv',
+                    localeUtils: MomentLocaleUtils
+                  }}
                 />
               </div>
               <div className="col-sm-2">
@@ -102,52 +78,7 @@ function Home() {
           <h6 className="border-bottom border-gray pb-2 mb-0">
             Recent updates
           </h6>
-          <ul>
-            {meals.map((item) => (
-              <li key={item.id}>{item.dish}</li>
-            ))}
-          </ul>
-          {/* <div className="d-flex align-items-start text-muted pt-3">
-            <img
-              src="https://via.placeholder.com/32/007bff"
-              alt=""
-              className="mr-2 rounded"
-              width="32px"
-              height="32px"
-            />
-            <p className="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <strong className="d-block text-gray-dark">@username</strong>
-              Donec id elit non mi porta gravida at eget metus. Fusce dapibus,
-              tellus ac cursus commodo, tortor mauris condimentum nibh, ut
-              fermentum massa justo sit amet risus.
-            </p>
-          </div>
-          <div className="media text-muted pt-3">
-            <img
-              src="https://via.placeholder.com/32/e83e8c"
-              alt=""
-              className="mr-2 rounded"
-            />
-            <p className="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <strong className="d-block text-gray-dark">@username</strong>
-              Donec id elit non mi porta gravida at eget metus. Fusce dapibus,
-              tellus ac cursus commodo, tortor mauris condimentum nibh, ut
-              fermentum massa justo sit amet risus.
-            </p>
-          </div>
-          <div className="media text-muted pt-3">
-            <img
-              src="https://via.placeholder.com/32/6f42c1"
-              alt=""
-              className="mr-2 rounded"
-            />
-            <p className="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <strong className="d-block text-gray-dark">@username</strong>
-              Donec id elit non mi porta gravida at eget metus. Fusce dapibus,
-              tellus ac cursus commodo, tortor mauris condimentum nibh, ut
-              fermentum massa justo sit amet risus.
-            </p>
-          </div> */}
+          <MealList meals={meals} />
           <nav className="pt-3" aria-label="Page navigation example">
             <ul className="pagination justify-content-center">
               <li className="page-item disabled">
