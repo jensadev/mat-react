@@ -23,7 +23,7 @@ class MealsDataService {
   }
 
   create(data) {
-    return http.post('/meals', { headers: authHeader() }, data);
+    return http.post('/meals', data, { headers: authHeader() });
   }
 
   update(id, data) {

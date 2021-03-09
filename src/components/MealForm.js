@@ -1,12 +1,13 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import 'react-day-picker/lib/style.css';
+
 // import 'moment/locale/sv';
 import './MealForm.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import { format } from 'date-fns';
 import sv from 'date-fns/locale/sv'; // the locale you want
 import Downshift from 'downshift';
-// import { useState } from 'react';
+import { useState } from 'react';
 import ReactDatePicker, { registerLocale } from 'react-datepicker';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -14,26 +15,28 @@ import Axios from '../libs/axios';
 registerLocale('sv', sv); // register it with the name you want
 
 const baseEndpoint = 'http://localhost:8080/api/dish';
-// import MealsDataService from '../services/meals.service';
-// import DishSearch from './DishSearch';
+import MealsDataService from '../services/meals.service';
 
-function stateReducer(state, changes) {
-  // this prevents the menu from being closed when the user
-  // selects an item with a keyboard or mouse
-  console.log(state);
-  console.log(changes.type);
-  // let val = changes.inputValue;
-  // changes.inputValue = val;
-  switch (changes.type) {
-    // Preventing from clearing value once ESC is pressed
-    case Downshift.stateChangeTypes.mouseUp:
-      return { isOpen: false };
-    default:
-      return changes;
-  }
-}
-
-function MealForm() {
+function MealForm(props) {
+  const [dishInput, setdishInput] = useState();
+  const [dishSelected, setdishSelected] = useState();
+  const stateReducer = (state, changes) => {
+    // this prevents the menu from being closed when the user
+    // selects an item with a keyboard or mouse
+    console.log(state);
+    setdishInput(state.inputValue);
+    setdishSelected(state.selectedItem);
+    console.log(changes.type);
+    // let val = changes.inputValue;
+    // changes.inputValue = val;
+    switch (changes.type) {
+      // Preventing from clearing value once ESC is pressed
+      case Downshift.stateChangeTypes.mouseUp:
+        return { isOpen: false };
+      default:
+        return changes;
+    }
+  };
   const ArrowIcon = (isOpen) => {
     return (
       <svg
@@ -65,62 +68,54 @@ function MealForm() {
       </svg>
     );
   };
-  // const initialMealState = {
-  //   id: null,
-  //   dish: null,
-  //   type: null,
-  //   date: null
-  // };
-  // const [meal, setMeal] = useState(initialMealState);
+
   // const [submitted, setSubmitted] = useState(false);
-
-  // const handleInputChange = (event) => {
-  //   const { name, value } = event.target;
-  //   setMeal({ ...meal, [name]: value });
-  // };
-
-  // const saveMeal = () => {
-  //   var data = {
-  //     title: meal.title,
-  //     description: meal.description
-  //   };
-
-  //   MealsDataService.create(data)
-  //     .then((response) => {
-  //       setMeal({
-  //         id: response.data.id,
-  //         title: response.data.title,
-  //         description: response.data.description,
-  //         published: response.data.published
-  //       });
-  //       setSubmitted(true);
-  //       console.log(response.data);
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //     });
-  // };
-
-  // const newMeal = () => {
-  //   setMeal(initialMealState);
-  //   setSubmitted(false);
-  // };
-
-  // const [startDate, setStartDate] = useState(new Date());
-  const { handleSubmit, errors, control, watch } = useForm(); // initialize the hook
+  const { handleSubmit, errors, control, watch } = useForm();
   const mealDate = watch('mealDate', new Date());
+  const handleError = (errors) => {
+    console.log(errors);
+  };
+  // const mealOptions = {
+  //   mealDish: { required: 'Dish is required' }
+  // };
+
   const onSubmit = async (data) => {
+    console.log({ dishInput });
+    console.log({ dishSelected });
     console.table(data);
     console.error(errors);
+
+    let meal = {
+      dish: data.mealDish || dishInput,
+      type_id: 3,
+      user_id: props.userId,
+      date: format(data.mealDate, 'yyyy-MM-dd')
+    };
+    MealsDataService.create(meal)
+      .then((response) => {
+        // console.log(response.data);
+        props.parentCallback(response);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   };
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit, handleError)}>
         <div className=" row ">
           <div className="col-sm-7">
             <Controller
-              as={
-                <Downshift stateReducer={stateReducer}>
+              defaultValue=""
+              name="mealDish"
+              control={control}
+              render={({ onChange, value, ref }) => (
+                <Downshift
+                  // onChange={(onChange, (option) => console.log(option))}
+                  onChange={onChange}
+                  selected={value}
+                  inputRef={ref}
+                  stateReducer={stateReducer}>
                   {({
                     inputValue,
                     getInputProps,
@@ -137,7 +132,7 @@ function MealForm() {
                         <label
                           className="form-label visually-hidden"
                           {...getLabelProps()}>
-                          Select a Dish
+                          Select a dish
                         </label>
                         <div className="input-group">
                           <input
@@ -174,7 +169,8 @@ function MealForm() {
                             }
 
                             if (!inputValue) {
-                              return <li disabled>Start typing...</li>;
+                              return <li disabled>Enter a dish...</li>;
+                              // return null;
                             }
 
                             return (
@@ -188,11 +184,7 @@ function MealForm() {
                                 }) => {
                                   // console.log(dishes);
                                   if (loading) {
-                                    return (
-                                      <li disabled>
-                                        No such dish in our database, create it.
-                                      </li>
-                                    );
+                                    return <li disabled>No such dish</li>;
                                   }
 
                                   if (error) {
@@ -209,6 +201,7 @@ function MealForm() {
                                       <li
                                         key={id}
                                         {...getItemProps({
+                                          id,
                                           item,
                                           index
                                         })}>
@@ -225,17 +218,7 @@ function MealForm() {
                     );
                   }}
                 </Downshift>
-              }
-              defaultValue=""
-              name="mealDish"
-              control={control}
-              valueName="selected"
-              // rules={{
-              //   validate: (data) => {
-              //     const date = new Date(data);
-              //     return date.getDate() !== 13;
-              //   }
-              // }}
+              )}
             />
           </div>
           <div className="col-sm-3">
@@ -246,7 +229,7 @@ function MealForm() {
               control={control}
               name="mealDate"
               defaultValue={mealDate}
-              render={({ onChange, ref, value }) => (
+              render={({ onChange, value }) => (
                 <ReactDatePicker
                   autoComplete="off"
                   className="form-control form-control-lg text-dark w-100 mb-3"
@@ -254,7 +237,6 @@ function MealForm() {
                   dateFormat="PPP"
                   onChange={onChange}
                   closeOnScroll={true}
-                  inputRef={ref}
                   selected={value}
                 />
               )}

@@ -16,11 +16,16 @@ function Home() {
   const user = JSON.parse(
     atob(AuthService.getCurrentUser().accessToken.split('.')[1])
   );
+  const [test, setTest] = useState(false);
+
+  const handleCallback = (childData) => {
+    setTest(childData);
+    // console.log(childData);
+  };
 
   useEffect(() => {
     MealsDataService.getAllUser(user.data.id).then(
       (response) => {
-        console.log(response);
         setMeals(response.data);
       },
       (error) => {
@@ -32,7 +37,7 @@ function Home() {
         setMeals(_content);
       }
     );
-  }, [user.data.id]);
+  }, [user.data.id, test]);
 
   return (
     <div className="h-100 d-flex flex-column">
@@ -40,7 +45,7 @@ function Home() {
       <Dashboard />
       <main className="container mt-3">
         <div className="my-3">
-          <MealForm />
+          <MealForm userId={user.data.id} parentCallback={handleCallback} />
         </div>
         <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
           <h6 className="border-bottom border-gray pb-2 mb-0">

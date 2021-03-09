@@ -1,7 +1,7 @@
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 
-export default function Date(props) {
+function Date(props) {
   const date = parseISO(props.dateString);
   return (
     <time className={props.classes} dateTime={props.dateString}>
@@ -9,3 +9,4 @@ export default function Date(props) {
     </time>
   );
 }
+export default Date;
