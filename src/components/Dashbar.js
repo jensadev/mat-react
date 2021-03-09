@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom';
 
-function Dashboard() {
+function Dashbar() {
   return (
     <div className="nav-scroller bg-transparent box-shadow">
-      <nav className="nav nav-underline">
-        <Link className="nav-link active" to="#">
+      <nav className="nav nav-underline" aria-label="Secondary navigation">
+        <Link className="nav-link active" aria-current="page" to="#">
           Dashboard
         </Link>
         <Link className="nav-link" to="#">
           Friends
-          <span className="badge badge-pill bg-light align-text-bottom">
+          <span className="badge bg-light text-dark rounded-pill align-text-bottom">
             27
           </span>
         </Link>
@@ -39,4 +39,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Dashbar;

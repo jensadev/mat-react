@@ -54,18 +54,18 @@ function SignIn(props) {
   };
 
   return (
-    <div className="text-center h-100 d-flex flex-column align-items-center w-100">
+    <div className="d-flex flex-column align-items-center w-100 h-100 text-center">
       <form className="form-signin" onSubmit={handleSignIn}>
-        <h1 className="h3 mb-3">Please sign in</h1>
+        <h1 className="h3 mb-3">Välkommen</h1>
         <div className="mb-3">
           <label htmlFor="email" className="visually-hidden">
-            Email address
+            E-post
           </label>
           <input
             type="email"
             id="email"
-            className="form-control"
-            placeholder="Email address"
+            className="form-control text-dark"
+            placeholder="E-post"
             name="email"
             value={email}
             onChange={onChangeEmail}
@@ -74,13 +74,13 @@ function SignIn(props) {
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="visually-hidden">
-            Password
+            Lösenord
           </label>
           <input
             type="password"
             id="password"
-            className="form-control"
-            placeholder="Password"
+            className="form-control text-dark"
+            placeholder="Lösenord"
             name="password"
             value={password}
             onChange={onChangePassword}
@@ -94,13 +94,13 @@ function SignIn(props) {
                 className="spinner-border spinner-border-sm"
                 role="status"
                 aria-hidden="true"></span>{' '}
-              Loading...
+              Laddar...
             </span>
           )}
-          {!loading && <span>Sign in</span>}
+          {!loading && <span>Logga in</span>}
         </button>
         <p className="mt-3 mb-3">
-          No account? <Link to={'/signup'}>Sign up here</Link>
+          <Link to={'/signup'}>Registrera dig</Link>
         </p>
       </form>
       <Footer />

@@ -1,0 +1,11 @@
+.octicon {
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.footer-octicon {
+  opacity: .6 !important;
+  &:hover {
+    opacity: 1 !important;
+  }
+}

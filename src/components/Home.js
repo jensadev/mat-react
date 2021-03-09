@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom';
 
 import AuthService from '../services/auth-service';
 import MealsDataService from '../services/meals.service';
-import Dashboard from './Dashboard';
+import Dashbar from './Dashbar';
 import Footer from './Footer';
 import MealForm from './MealForm';
 import MealList from './MealList';
-import Nav from './Nav';
+import Navbar from './Navbar';
 
 function Home() {
   const [meals, setMeals] = useState([]);
@@ -41,15 +41,15 @@ function Home() {
 
   return (
     <div className="h-100 d-flex flex-column">
-      <Nav />
-      <Dashboard />
+      <Navbar />
+      <Dashbar />
       <main className="container mt-3">
         <div className="my-3">
           <MealForm userId={user.data.id} parentCallback={handleCallback} />
         </div>
         <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
           <h6 className="border-bottom border-gray pb-2 mb-0">
-            Recent updates
+            Senaste måltider
           </h6>
           <MealList meals={meals} />
           <nav className="pt-3" aria-label="Page navigation example">
@@ -111,7 +111,7 @@ function Home() {
         </div>
 
         <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
-          <h6 className="border-bottom border-gray pb-2 mb-0">Suggestions</h6>
+          <h6 className="border-bottom border-gray pb-2 mb-0">Förslag</h6>
           <div className="media text-muted pt-3">
             <img
               data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1"

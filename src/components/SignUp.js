@@ -3,6 +3,7 @@ import './SignIn.scss';
 import React, { useState } from 'react';
 
 import AuthService from '../services/auth-service';
+import Footer from './Footer';
 
 function SignUp(props) {
   const [email, setEmail] = useState('');
@@ -58,18 +59,18 @@ function SignUp(props) {
   };
 
   return (
-    <div className="text-center h-100 d-flex align-items-center">
+    <div className="d-flex flex-column align-items-center w-100 h-100 text-center">
       <form className="form-signin" onSubmit={handleSignUp}>
-        <h1 className="h3 mb-3">Sign up</h1>
+        <h1 className="h3 mb-3">Gå med idag</h1>
         <div className="mb-3">
           <label htmlFor="email" className="visually-hidden">
-            Email address
+            E-post
           </label>
           <input
             type="email"
             id="email"
-            className="form-control email"
-            placeholder="Email address"
+            className="form-control email text-dark"
+            placeholder="E-post"
             name="email"
             value={email}
             onChange={onChangeEmail}
@@ -78,13 +79,13 @@ function SignUp(props) {
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="visually-hidden">
-            Password
+            Lösenord
           </label>
           <input
             type="password"
             id="password"
-            className="form-control up-pwd"
-            placeholder="Password"
+            className="form-control up-pwd text-dark"
+            placeholder="Lösenord"
             name="password"
             value={password}
             onChange={onChangePassword}
@@ -93,13 +94,13 @@ function SignUp(props) {
         </div>
         <div className="mb-3">
           <label htmlFor="confirm-password" className="visually-hidden">
-            Confirm Password
+            Bekräfta lösenord
           </label>
           <input
             type="password"
             id="confirm-password"
-            className="form-control up-conf-pwd"
-            placeholder="Confirm Password"
+            className="form-control up-conf-pwd text-dark"
+            placeholder="Bekräfta lösenord"
             name="confirm-password"
             value={confirmPassword}
             onChange={onChangeConfirmPassword}
@@ -113,12 +114,13 @@ function SignUp(props) {
                 className="spinner-border spinner-border-sm"
                 role="status"
                 aria-hidden="true"></span>{' '}
-              Loading...
+              Laddar...
             </span>
           )}
-          {!loading && <span>Sign up</span>}
+          {!loading && <span>Registrera dig</span>}
         </button>
       </form>
+      <Footer />
     </div>
   );
 }

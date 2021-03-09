@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-// import AuthService from '../services/auth-service';
+import AuthService from '../services/auth-service';
 
-function Nav() {
+function Navbar() {
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
   const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
   // const [currentUser, setCurrentUser] = useState(undefined);
@@ -18,15 +18,17 @@ function Nav() {
   //   }
   // }, []);
 
-  // const signOut = () => {
-  //   AuthService.signOut();
-  // };
+  function signOut(e) {
+    e.preventDefault();
+    AuthService.signOut();
+    window.location.reload();
+  }
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-transparent">
       <div className="container-fluid">
         <Link className="navbar-brand" to={'/'}>
-          Navbar
+          <img src="/images/tallrik.svg" alt="" width="32" height="32" />
         </Link>
         <button
           className="navbar-toggler"
@@ -45,7 +47,7 @@ function Nav() {
           <ul className="navbar-nav">
             <li className="nav-item">
               <Link className="nav-link active" aria-current="page" to={'/'}>
-                Home
+                Hem
               </Link>
             </li>
           </ul>
@@ -53,7 +55,9 @@ function Nav() {
         <ul className="navbar-nav px-3">
           <li className="nav-item text-nowrap">
             <form>
-              <button className="btn btn-link">Signout</button>
+              <button onClick={signOut} className="btn btn-link">
+                Logga ut
+              </button>
             </form>
           </li>
         </ul>
@@ -62,4 +66,4 @@ function Nav() {
   );
 }
 
-export default Nav;
+export default Navbar;

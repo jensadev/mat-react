@@ -47,13 +47,3 @@
 .lh-100 { line-height: 1; }
 .lh-125 { line-height: 1.25; }
 .lh-150 { line-height: 1.5; }
-
-.form-control-feedback {
-  position: absolute;
-  z-index: 2;
-  display: block;
-  width: 2rem;
-  height: 2rem;
-  pointer-events: none;
-  color: #aaa;
-}

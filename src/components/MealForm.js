@@ -11,7 +11,7 @@ import { useState } from 'react';
 import ReactDatePicker, { registerLocale } from 'react-datepicker';
 import { Controller, useForm } from 'react-hook-form';
 
-import Axios from '../libs/axios';
+import Axios from '../utils/Axios';
 registerLocale('sv', sv); // register it with the name you want
 
 const baseEndpoint = 'http://localhost:8080/api/dish';
@@ -94,6 +94,7 @@ function MealForm(props) {
     MealsDataService.create(meal)
       .then((response) => {
         // console.log(response.data);
+        window.flash('record has been created successfully!', 'success');
         props.parentCallback(response);
       })
       .catch((e) => {
@@ -132,7 +133,7 @@ function MealForm(props) {
                         <label
                           className="form-label visually-hidden"
                           {...getLabelProps()}>
-                          Select a dish
+                          Vad har du ätit idag?
                         </label>
                         <div className="input-group">
                           <input
@@ -141,7 +142,7 @@ function MealForm(props) {
                             className="form-control form-control-lg text-dark"
                             {...getInputProps({
                               isOpen,
-                              placeholder: 'Search dish'
+                              placeholder: 'Vad har du ätit idag?'
                             })}
                           />
                           {selectedItem ? (
@@ -169,7 +170,11 @@ function MealForm(props) {
                             }
 
                             if (!inputValue) {
-                              return <li disabled>Enter a dish...</li>;
+                              return (
+                                <li disabled>
+                                  Skriv för att söka eller lägga till en rätt.
+                                </li>
+                              );
                               // return null;
                             }
 
@@ -184,7 +189,12 @@ function MealForm(props) {
                                 }) => {
                                   // console.log(dishes);
                                   if (loading) {
-                                    return <li disabled>No such dish</li>;
+                                    return (
+                                      <li disabled>
+                                        Maträtten finns inte, klicka på skapa
+                                        för att lägga till.
+                                      </li>
+                                    );
                                   }
 
                                   if (error) {
@@ -223,7 +233,7 @@ function MealForm(props) {
           </div>
           <div className="col-sm-3">
             <label htmlFor="mealDate" className="form-label visually-hidden">
-              Pick a date
+              Välj ett datum
             </label>
             <Controller
               control={control}
@@ -246,7 +256,7 @@ function MealForm(props) {
             <button
               className="btn btn-lg btn-dark w-100 text-nowrap overflow-hidden mb-3"
               type="submit">
-              Add meal
+              Skapa
             </button>
           </div>
         </div>

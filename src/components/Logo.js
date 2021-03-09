@@ -3,7 +3,12 @@ import './Logo.scss';
 function Logo() {
   return (
     <div className="position-absolute top-50 start-50 translate-middle d-flex align-items-center logo-container">
-      <svg
+      <img
+        className="logo"
+        src="/images/tallrik-bg.svg"
+        alt="Källa: https://www.livsmedelsverket.se/"
+      />
+      {/* <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 495 495"
         className="logo"
@@ -129,7 +134,7 @@ function Logo() {
             />
           </g>
         </g>
-      </svg>
+      </svg> */}
     </div>
   );
 }
