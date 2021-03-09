@@ -4,7 +4,7 @@
 import './MealForm.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { format } from 'date-fns';
+// import { format } from 'date-fns';
 import sv from 'date-fns/locale/sv'; // the locale you want
 import Downshift from 'downshift';
 import { useState } from 'react';
@@ -15,17 +15,19 @@ import Axios from '../utils/Axios';
 registerLocale('sv', sv); // register it with the name you want
 
 const baseEndpoint = 'http://localhost:8080/api/dish';
+import { formatISO } from 'date-fns';
+
 import MealsDataService from '../services/meals.service';
 
 function MealForm(props) {
   const [dishInput, setdishInput] = useState();
-  const [dishSelected, setdishSelected] = useState();
+  // const [dishSelected, setdishSelected] = useState();
   const stateReducer = (state, changes) => {
     // this prevents the menu from being closed when the user
     // selects an item with a keyboard or mouse
     console.log(state);
     setdishInput(state.inputValue);
-    setdishSelected(state.selectedItem);
+    // setdishSelected(state.selectedItem);
     console.log(changes.type);
     // let val = changes.inputValue;
     // changes.inputValue = val;
@@ -80,21 +82,20 @@ function MealForm(props) {
   // };
 
   const onSubmit = async (data) => {
-    console.log({ dishInput });
-    console.log({ dishSelected });
-    console.table(data);
+    // console.log({ dishInput });
+    // console.log({ dishSelected });
+    // console.table(data);
     console.error(errors);
 
     let meal = {
       dish: data.mealDish || dishInput,
       type_id: 3,
       user_id: props.userId,
-      date: format(data.mealDate, 'yyyy-MM-dd')
+      date: formatISO(data.mealDate)
     };
     MealsDataService.create(meal)
       .then((response) => {
         // console.log(response.data);
-        window.flash('record has been created successfully!', 'success');
         props.parentCallback(response);
       })
       .catch((e) => {
