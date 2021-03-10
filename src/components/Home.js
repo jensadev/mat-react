@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import AuthService from '../services/auth-service';
-import MealsDataService from '../services/meals.service';
+import UserDataService from '../services/user.service';
 import Dashbar from './Dashbar';
 import Footer from './Footer';
 import MealForm from './MealForm';
@@ -24,7 +24,7 @@ function Home() {
   };
 
   useEffect(() => {
-    MealsDataService.getAllUser(user.data.id).then(
+    UserDataService.getAllMeals(user.data.id).then(
       (response) => {
         setMeals(response.data);
       },

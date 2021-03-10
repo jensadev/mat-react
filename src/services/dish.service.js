@@ -34,9 +34,9 @@ class DishDataService {
   //   return http.delete(`/meals`, { headers: authHeader() });
   // }
 
-  findBy(param) {
-    return http.get(`/meals?search=${param}`);
-  }
+  // findBy(param, id) {
+  //   return http.get(`/users?search=${param}`);
+  // }
 }
 
 export default new DishDataService();
