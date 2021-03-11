@@ -8,26 +8,26 @@ const items = ['apple', 'pear', 'orange', 'grape', 'banana'];
 // export default ({ value, onChange }) => (
 
 function Dishsearch({ value, onChange }) {
-  const stateReducer = (state, changes) => {
-    // this prevents the menu from being closed when the user
-    // selects an item with a keyboard or mouse
-    console.table(state);
-    console.table(changes);
-    // setdishSelected(state.selectedItem);
-    console.log(changes.type);
-    // let val = changes.inputValue;
-    // changes.inputValue = val;
-    switch (changes.type) {
-      // Preventing from clearing value once ESC is pressed
-      case Downshift.stateChangeTypes.mouseUp:
-        return { isOpen: false };
-      default:
-        return changes;
-    }
-  };
+  // const stateReducer = (state, changes) => {
+  //   // this prevents the menu from being closed when the user
+  //   // selects an item with a keyboard or mouse
+  //   console.table(state);
+  //   console.table(changes);
+  //   // setdishSelected(state.selectedItem);
+  //   console.log(changes.type);
+  //   // let val = changes.inputValue;
+  //   // changes.inputValue = val;
+  //   switch (changes.type) {
+  //     // Preventing from clearing value once ESC is pressed
+  //     case Downshift.stateChangeTypes.mouseUp:
+  //       return { isOpen: false };
+  //     default:
+  //       return changes;
+  //   }
+  // };
   return (
     <Downshift
-      stateReducer={stateReducer}
+      // stateReducer={stateReducer}
       selectedItem={value}
       onStateChange={(e) => onChange(e.inputValue || '')}
       inputValue={value}

@@ -91,6 +91,7 @@ function MealForm(props) {
     console.table(data);
     console.error(errors);
 
+    console.log(dishes);
     // let meal = {
     //   dish: data.mealDish,
     //   type_id: 3,
@@ -116,7 +117,7 @@ function MealForm(props) {
           </div>
           <div className="col-sm-4">
             <select
-              ref={register}
+              ref={register({ required: true })}
               defaultValue="3"
               name="type"
               className="form-select text-dark w-100"
@@ -125,6 +126,11 @@ function MealForm(props) {
               <option value="2">Lunch</option>
               <option value="3">Middag</option>
             </select>
+            {errors.type && (
+              <div className="invalid-feedback">
+                <p>Fel</p>
+              </div>
+            )}
           </div>
           <div className="col-sm-2">
             <p>den</p>
@@ -134,6 +140,7 @@ function MealForm(props) {
               Välj ett datum
             </label>
             <Controller
+              // ref={register({ required: true })}
               control={control}
               name="date"
               defaultValue={new Date()}
@@ -149,6 +156,11 @@ function MealForm(props) {
                 />
               )}
             />
+            {errors.date && (
+              <div className="invalid-feedback">
+                <p>Datum</p>
+              </div>
+            )}
           </div>
         </div>
         <div className=" row ">
@@ -161,10 +173,13 @@ function MealForm(props) {
               defaultValue=""
               name="dish"
               // eslint-disable-next-line no-unused-vars
-              render={({ ref, ...rest }) => (
-                <Dishsearch dishList={dishes} {...rest} />
-              )}
+              render={({ ref, ...rest }) => <Dishsearch {...rest} />}
             />
+            {errors.type && (
+              <div className="invalid-feedback">
+                <p>rätt</p>
+              </div>
+            )}
           </div>
           <div className="col-sm-2">
             <button
