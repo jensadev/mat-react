@@ -5,35 +5,36 @@ import 'react-datepicker/dist/react-datepicker.css';
 // // import { format } from 'date-fns';
 import sv from 'date-fns/locale/sv'; // the locale you want
 // // import Downshift from 'downshift';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 registerLocale('sv', sv); // register it with the name you want
 // import { formatISO } from 'date-fns';
 // import MealsDataService from '../services/meals.service';
 import { Field, Form } from 'react-final-form';
 
-// import UserDataService from '../services/user.service';
+import UserDataService from '../services/user.service';
 import DownshiftInput from './DownshiftInput';
-import fruit from './fruit';
-function MealForm() {
-  // const [dishes, setDishes] = useState([]);
-  const [today] = useState(new Date());
-  // useEffect(() => {
-  //   UserDataService.getAllDishes(props.userId).then(
-  //     (response) => {
-  //       setDishes(response.data);
-  //       // console.log(dishes);
-  //     },
-  //     (error) => {
-  //       const _content =
-  //         (error.response && error.response.data) ||
-  //         error.message ||
-  //         error.toString();
+// import fruit from './fruit';
 
-  //       setDishes(_content);
-  //     }
-  //   );
-  // }, [props.userId]);
+function MealForm(props) {
+  const [dishes, setDishes] = useState([]);
+  const [today] = useState(new Date());
+  useEffect(() => {
+    UserDataService.getAllDishes(props.userId).then(
+      (response) => {
+        setDishes(response.data);
+        // console.log(dishes);
+      },
+      (error) => {
+        const _content =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
+
+        setDishes(_content);
+      }
+    );
+  }, [props.userId]);
   const DatePickerAdapter = ({ input: { onChange, value }, ...rest }) => (
     <DatePicker
       selected={value}
@@ -50,11 +51,14 @@ function MealForm() {
   };
   const validate = (values) => {
     const errors = {};
-    if (!values.firstName) {
-      errors.firstName = 'Required';
+    if (!values.type) {
+      errors.type = 'Required';
     }
-    if (!values.fruit) {
-      errors.fruit = 'Required';
+    if (values.date == null || !values.date) {
+      errors.date = 'Required';
+    }
+    if (!values.dish) {
+      errors.dish = 'Required';
     }
     return errors;
   };
@@ -100,9 +104,15 @@ function MealForm() {
                 <option value="2">Lunch</option>
                 <option value="3">Middag</option>
               </Field>
+              <Error name="type" />
             </div>
             <div>
-              <p>{values.date && values.date === today && 'idag, '}den</p>
+              <p>
+                {values.date &&
+                  values.date.toDateString() == today.toDateString() &&
+                  'idag, '}
+                den
+              </p>
             </div>
             <div>
               <label htmlFor="date" className="form-label visually-hidden">
@@ -116,6 +126,7 @@ function MealForm() {
                 dateFormat="PPP"
                 component={DatePickerAdapter}
               />
+              <Error name="date" />
             </div>
             <div>
               <p>
@@ -125,17 +136,17 @@ function MealForm() {
               </p>
             </div>
             <div>
-              <label htmlFor="fruit" className="form-label visually-hidden">
+              <label htmlFor="dish" className="form-label visually-hidden">
                 måltid
               </label>
               <Field
                 className="form-control text-dark w-100"
-                name="fruit"
-                items={fruit}
+                name="dish"
+                items={dishes}
                 component={DownshiftInput}
                 placeholder="Skriv för att söka eller lägga till en rätt..."
               />
-              <Error name="fruit" />
+              <Error name="dish" />
             </div>
             <div className="buttons">
               <button

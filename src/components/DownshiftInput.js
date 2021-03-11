@@ -22,7 +22,7 @@ const DownshiftInput = ({ input, meta, placeholder, items, ...rest }) => (
       selectedItem
     }) => {
       const filteredItems = matchSorter(items, inputValue, {
-        keys: ['label'],
+        keys: ['name'],
         maxRanking: matchSorter.rankings.STARTS_WITH
       });
       return (
@@ -36,29 +36,28 @@ const DownshiftInput = ({ input, meta, placeholder, items, ...rest }) => (
           />
           {isOpen && !!filteredItems.length && (
             <div
-              className="downshift-options"
+              className="downshift-options bg-white"
               style={{
-                background: 'white',
                 position: 'absolute',
                 top: '100%',
                 left: 15,
                 right: 0,
                 zIndex: 4
               }}>
-              {filteredItems.map(({ value, label }, index) => (
+              {filteredItems.map(({ id, name }, index) => (
                 <div
-                  key={index}
+                  key={name}
                   {...getItemProps({
-                    key: value,
+                    key: id,
                     index,
-                    item: value,
+                    item: name,
                     style: {
                       backgroundColor:
                         highlightedIndex === index ? 'lightgray' : 'white',
-                      fontWeight: selectedItem === value ? 'bold' : 'normal'
+                      fontWeight: selectedItem === name ? 'bold' : 'normal'
                     }
                   })}>
-                  {label}
+                  {name}
                 </div>
               ))}
             </div>
