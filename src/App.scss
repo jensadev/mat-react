@@ -77,3 +77,7 @@ $body-color: $my-white;
 .text-small {
     font-size: .875rem;
 }
+
+.text-capitalize-first::first-letter {
+  text-transform: uppercase;
+}

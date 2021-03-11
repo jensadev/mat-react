@@ -89,13 +89,13 @@ function SignIn(props) {
         </div>
         <button className="w-100 btn btn-light text-primary" disabled={loading}>
           {loading && (
-            <span className="d-flex align-items-center justify-content-center">
+            <div className="d-flex align-items-center justify-content-center">
               <span
                 className="spinner-border spinner-border-sm"
                 role="status"
                 aria-hidden="true"></span>{' '}
               Laddar...
-            </span>
+            </div>
           )}
           {!loading && <span>Logga in</span>}
         </button>

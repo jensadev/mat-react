@@ -1,0 +1,41 @@
+.downshift {
+  position: relative !important;
+  width: 100%;
+}
+.downshift-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+
+
+  color: #6c757d;
+  right: 0;
+  z-index: 4;
+
+}
+  .downshift-option {
+    background-color: rgba(255, 255, 255, .8) !important;
+    padding: 0.375rem 0.75rem;
+    border-top: 1px solid var(--bs-primary);
+    cursor: pointer;
+  &:first-child {
+    margin-top: .2rem;
+    border-radius: 0.25rem;
+  }
+  &:not(:only-child):first-child {
+    border-bottom-right-radius: 0rem;
+    border-bottom-left-radius: 0rem;
+  }
+  &:not(:only-child):last-child {
+    border-radius: 0.25rem;
+    border-top-right-radius: 0rem;
+    border-top-left-radius: 0rem;
+  }
+
+}
+  .highlight {
+    color: var(--bs-dark);
+  }
+  .active {
+    font-weight: bold;
+  }

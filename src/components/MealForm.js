@@ -2,7 +2,7 @@
 import './MealForm.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 
-// // import { format } from 'date-fns';
+import { format } from 'date-fns';
 import sv from 'date-fns/locale/sv'; // the locale you want
 // // import Downshift from 'downshift';
 import { useEffect, useState } from 'react';
@@ -35,6 +35,7 @@ function MealForm(props) {
       }
     );
   }, [props.userId]);
+
   const DatePickerAdapter = ({ input: { onChange, value }, ...rest }) => (
     <DatePicker
       selected={value}
@@ -46,13 +47,16 @@ function MealForm(props) {
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const onSubmit = async (values) => {
-    await sleep(300);
+    await sleep(1000);
     window.alert(JSON.stringify(values, 0, 2));
   };
+
   const validate = (values) => {
     const errors = {};
     if (!values.type) {
       errors.type = 'Required';
+    } else if (isNaN(values.type)) {
+      errors.type = 'Must be a number';
     }
     if (values.date == null || !values.date) {
       errors.date = 'Required';
@@ -62,106 +66,111 @@ function MealForm(props) {
     }
     return errors;
   };
+
   const Error = ({ name }) => (
     <Field
       name={name}
       subscribe={{ touched: true, error: true }}
       render={({ meta: { touched, error } }) =>
-        touched && error ? <span>{error}</span> : null
+        touched && error ? (
+          <div className="invalid-feedback">{error}</div>
+        ) : null
       }
     />
   );
+
   return (
     <div>
       <Form
         onSubmit={onSubmit}
         validate={validate}
-        render={({ handleSubmit, form, submitting, values }) => (
+        render={({ handleSubmit, form, invalid, submitting, values }) => (
           <form onSubmit={handleSubmit}>
-            {/* <div>
-              <label htmlFor="firstName">First Name</label>
-              <Field
-                name="firstName"
-                component="input"
-                type="text"
-                placeholder="First Name"
-              />
-              <Error name="firstName" />
-            </div> */}
-            <div>
-              <p>Till</p>
-            </div>
-            <div>
-              <label htmlFor="type" className="form-label visually-hidden">
-                måltidstyp
-              </label>
-              <Field
-                name="type"
-                component="select"
-                defaultValue="3"
-                className="form-select text-dark w-100">
-                <option value="1">Frukost</option>
-                <option value="2">Lunch</option>
-                <option value="3">Middag</option>
-              </Field>
-              <Error name="type" />
-            </div>
-            <div>
-              <p>
-                {values.date &&
+            <div className="row gy-2 gx-3 align-items-center justify-content-md-between h6">
+              <div className="col-sm-3 col-lg-2 col-xl-auto text-nowrap text-capitalize-first">
+                {values.date && format(values.date, 'eeee', { locale: sv })} den
+                {/* {values.date &&
                   values.date.toDateString() == today.toDateString() &&
                   'idag, '}
-                den
-              </p>
-            </div>
-            <div>
-              <label htmlFor="date" className="form-label visually-hidden">
-                datum
-              </label>
-              <Field
-                className="form-control text-dark w-100"
-                defaultValue={today}
-                name="date"
-                locale={sv}
-                dateFormat="PPP"
-                component={DatePickerAdapter}
-              />
-              <Error name="date" />
-            </div>
-            <div>
-              <p>
+                den */}
+              </div>
+
+              <div className="col-sm-9 col-lg-2 col-xl-2">
+                <label htmlFor="date" className="form-label visually-hidden">
+                  datum
+                </label>
+                <Field
+                  className="form-control text-dark w-100"
+                  defaultValue={today}
+                  name="date"
+                  locale={sv}
+                  dateFormat="do LLLL"
+                  component={DatePickerAdapter}
+                />
+                <Error name="date" />
+              </div>
+              <div className="col-sm-3 col-lg-2 col-xl-auto text-nowrap">
                 {values.date && values.date > today
                   ? 'ska jag äta'
                   : 'har jag ätit'}
-              </p>
-            </div>
-            <div>
-              <label htmlFor="dish" className="form-label visually-hidden">
-                måltid
-              </label>
-              <Field
-                className="form-control text-dark w-100"
-                name="dish"
-                items={dishes}
-                component={DownshiftInput}
-                placeholder="Skriv för att söka eller lägga till en rätt..."
-              />
-              <Error name="dish" />
-            </div>
-            <div className="buttons">
-              <button
-                type="submit"
-                disabled={submitting}
-                className="btn btn-dark w-100 text-nowrap overflow-hidden">
-                Skapa
-              </button>
-              {/* <button
+              </div>
+              <div className="col-sm-9 col-lg-6 col-xl-4">
+                <label htmlFor="dish" className="form-label visually-hidden">
+                  rätt
+                </label>
+                <Field
+                  className="form-control text-dark w-100"
+                  name="dish"
+                  items={dishes}
+                  component={DownshiftInput}
+                  placeholder="Skriv för att söka eller lägga till en rätt..."
+                />
+                <Error name="dish" />
+              </div>
+              <div className="col-sm-3 col-lg-2 col-xl-auto">till </div>
+              <div className="col-sm-9 col-lg-2 col-xl-auto">
+                <label htmlFor="type" className="form-label visually-hidden">
+                  typ av mål
+                </label>
+                <Field
+                  name="type"
+                  component="select"
+                  defaultValue="3"
+                  className="form-select text-dark w-100">
+                  <option value="1">Frukost</option>
+                  <option value="2">Lunch</option>
+                  <option value="3">Middag</option>
+                </Field>
+                <Error name="type" />
+              </div>
+              <div className="col-lg-2 col-xl-auto"> </div>
+              <div className="buttons col-sm col-lg-6 col-xl-1">
+                <button
+                  type="submit"
+                  className="btn btn-dark text-nowrap overflow-hidden w-100"
+                  disabled={submitting || invalid}>
+                  {submitting && (
+                    <div className="d-flex align-items-center justify-content-center">
+                      <span
+                        style={{ height: '1.6rem', width: '1.6rem' }}
+                        className="spinner-border"
+                        role="status"
+                        aria-hidden="true"></span>{' '}
+                      <span className="visually-hidden">Laddar...</span>
+                    </div>
+                  )}
+                  {!submitting && (
+                    <span style={{ fontWeight: 500 }}>Skapa</span>
+                  )}
+                </button>
+                {/* <button
                 className="btn btn-dark w-100 text-nowrap overflow-hidden"
                 type="button"
                 onClick={form.reset}
                 disabled={submitting || pristine}>
                 Reset
               </button> */}
+              </div>
             </div>
             <pre>{JSON.stringify(values, 0, 2)}</pre>
           </form>
@@ -172,86 +181,3 @@ function MealForm(props) {
 }
 
 export default MealForm;
-
-{
-  /* <form onSubmit={handleSubmit(onSubmit)}>
-<div className=" row ">
-  <div className="col-sm-2">
-    <p>Till</p>
-  </div>
-  <div className="col-sm-4">
-    <select
-      ref={register({ required: true })}
-      defaultValue="3"
-      name="type"
-      className="form-select text-dark w-100"
-      aria-label="Måltidstyp">
-      <option value="1">Frukost</option>
-      <option value="2">Lunch</option>
-      <option value="3">Middag</option>
-    </select>
-    {errors.type && (
-      <div className="invalid-feedback">
-        <p>Fel</p>
-      </div>
-    )}
-  </div>
-  <div className="col-sm-2">
-    <p>den</p>
-  </div>
-  <div className="col-sm-3">
-    <label htmlFor="mealDate" className="form-label visually-hidden">
-      Välj ett datum
-    </label>
-    <Controller
-      // ref={register({ required: true })}
-      control={control}
-      name="date"
-      defaultValue={new Date()}
-      render={(props) => (
-        <ReactDatePicker
-          autoComplete="off"
-          className="form-control text-dark w-100 mb-3"
-          locale={sv}
-          dateFormat="PPP"
-          onChange={(e) => props.onChange(e)}
-          selected={props.value}
-          closeOnScroll={true}
-        />
-      )}
-    />
-    {errors.date && (
-      <div className="invalid-feedback">
-        <p>Datum</p>
-      </div>
-    )}
-  </div>
-</div>
-<div className=" row ">
-  <div className="col-sm-2">
-    <p>har jag ätit</p>
-  </div>
-  <div className="col-sm-7">
-    <Controller
-      control={control}
-      defaultValue=""
-      name="dish"
-      // eslint-disable-next-line no-unused-vars
-      render={({ ref, ...rest }) => <Dishsearch {...rest} />}
-    />
-    {errors.type && (
-      <div className="invalid-feedback">
-        <p>rätt</p>
-      </div>
-    )}
-  </div>
-  <div className="col-sm-2">
-    <button
-      className="btn btn-dark w-100 text-nowrap overflow-hidden mb-3"
-      type="submit">
-      Skapa
-    </button>
-  </div>
-</div>
-</form> */
-}

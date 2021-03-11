@@ -28,7 +28,13 @@ function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-dark bg-transparent">
       <div className="container-fluid">
         <Link className="navbar-brand" to={'/'}>
-          <img src="/images/tallrik.svg" alt="" width="32" height="32" />
+          <img
+            className="navbar-logo"
+            src="/images/tallrik.svg"
+            alt=""
+            width="32"
+            height="32"
+          />
         </Link>
         <button
           className="navbar-toggler"

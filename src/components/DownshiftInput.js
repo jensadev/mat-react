@@ -1,3 +1,5 @@
+import './DownshiftInput.scss';
+
 import Downshift from 'downshift';
 import { matchSorter } from 'match-sorter';
 import React from 'react';
@@ -26,7 +28,7 @@ const DownshiftInput = ({ input, meta, placeholder, items, ...rest }) => (
         maxRanking: matchSorter.rankings.STARTS_WITH
       });
       return (
-        <div className="downshift" style={{ position: 'relative' }}>
+        <div className="downshift text-dark">
           <input
             className="form-control text-dark w-100"
             {...getInputProps({
@@ -35,15 +37,7 @@ const DownshiftInput = ({ input, meta, placeholder, items, ...rest }) => (
             })}
           />
           {isOpen && !!filteredItems.length && (
-            <div
-              className="downshift-options bg-white"
-              style={{
-                position: 'absolute',
-                top: '100%',
-                left: 15,
-                right: 0,
-                zIndex: 4
-              }}>
+            <div className="downshift-options">
               {filteredItems.map(({ id, name }, index) => (
                 <div
                   key={name}
@@ -51,9 +45,12 @@ const DownshiftInput = ({ input, meta, placeholder, items, ...rest }) => (
                     key: id,
                     index,
                     item: name,
+                    className: 'downshift-option',
+                    //  && selectedItem === name
+                    // ? 'active'
+                    // : 'normal'
                     style: {
-                      backgroundColor:
-                        highlightedIndex === index ? 'lightgray' : 'white',
+                      color: highlightedIndex === index ? 'var(--bs-dark)' : '',
                       fontWeight: selectedItem === name ? 'bold' : 'normal'
                     }
                   })}>
