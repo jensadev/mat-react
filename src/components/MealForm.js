@@ -9,9 +9,9 @@ import { useEffect, useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 registerLocale('sv', sv); // register it with the name you want
 // import { formatISO } from 'date-fns';
-// import MealsDataService from '../services/meals.service';
 import { Field, Form } from 'react-final-form';
 
+import MealsDataService from '../services/meals.service';
 import UserDataService from '../services/user.service';
 import DownshiftInput from './DownshiftInput';
 // import fruit from './fruit';
@@ -49,14 +49,23 @@ function MealForm(props) {
   const onSubmit = async (values) => {
     await sleep(1000);
     window.alert(JSON.stringify(values, 0, 2));
+
+    MealsDataService.create(values)
+      .then((response) => {
+        console.log(response.data);
+        props.parentCallback(response);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   };
 
   const validate = (values) => {
     const errors = {};
-    if (!values.type) {
-      errors.type = 'Required';
-    } else if (isNaN(values.type)) {
-      errors.type = 'Must be a number';
+    if (!values.type_id) {
+      errors.type_id = 'Required';
+    } else if (isNaN(values.type_id)) {
+      errors.type_id = 'Must be a number';
     }
     if (values.date == null || !values.date) {
       errors.date = 'Required';
@@ -133,7 +142,7 @@ function MealForm(props) {
                   typ av mål
                 </label>
                 <Field
-                  name="type"
+                  name="type_id"
                   component="select"
                   defaultValue="3"
                   className="form-select text-dark w-100">
@@ -143,7 +152,7 @@ function MealForm(props) {
                 </Field>
                 <Error name="type" />
               </div>
-              <div className="col-lg-2 col-xl-auto"> </div>
+              <div className="col-lg-2 col-xl-auto"></div>
               <div className="buttons col-sm col-lg-6 col-xl-1">
                 <button
                   type="submit"
@@ -172,7 +181,7 @@ function MealForm(props) {
               </button> */}
               </div>
             </div>
-            <pre>{JSON.stringify(values, 0, 2)}</pre>
+            {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
           </form>
         )}
       />
