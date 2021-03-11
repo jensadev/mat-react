@@ -28,6 +28,7 @@ const DownshiftInput = ({ input, meta, placeholder, items, ...rest }) => (
       return (
         <div className="downshift" style={{ position: 'relative' }}>
           <input
+            className="form-control text-dark w-100"
             {...getInputProps({
               name: input.name,
               placeholder

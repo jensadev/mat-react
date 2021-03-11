@@ -17,7 +17,7 @@ import DownshiftInput from './DownshiftInput';
 import fruit from './fruit';
 function MealForm() {
   // const [dishes, setDishes] = useState([]);
-  const [checkDate] = useState(new Date());
+  const [today] = useState(new Date());
   // useEffect(() => {
   //   UserDataService.getAllDishes(props.userId).then(
   //     (response) => {
@@ -72,7 +72,7 @@ function MealForm() {
       <Form
         onSubmit={onSubmit}
         validate={validate}
-        render={({ handleSubmit, form, pristine, submitting, values }) => (
+        render={({ handleSubmit, form, submitting, values }) => (
           <form onSubmit={handleSubmit}>
             {/* <div>
               <label htmlFor="firstName">First Name</label>
@@ -91,21 +91,26 @@ function MealForm() {
               <label htmlFor="type" className="form-label visually-hidden">
                 måltidstyp
               </label>
-              <Field name="type" component="select" defaultValue="3">
+              <Field
+                name="type"
+                component="select"
+                defaultValue="3"
+                className="form-select text-dark w-100">
                 <option value="1">Frukost</option>
                 <option value="2">Lunch</option>
                 <option value="3">Middag</option>
               </Field>
             </div>
             <div>
-              <p>den</p>
+              <p>{values.date && values.date === today && 'idag, '}den</p>
             </div>
             <div>
               <label htmlFor="date" className="form-label visually-hidden">
                 datum
               </label>
               <Field
-                defaultValue={checkDate}
+                className="form-control text-dark w-100"
+                defaultValue={today}
                 name="date"
                 locale={sv}
                 dateFormat="PPP"
@@ -113,30 +118,39 @@ function MealForm() {
               />
             </div>
             <div>
-              <p>har jag ätit</p>
+              <p>
+                {values.date && values.date > today
+                  ? 'ska jag äta'
+                  : 'har jag ätit'}
+              </p>
             </div>
             <div>
               <label htmlFor="fruit" className="form-label visually-hidden">
                 måltid
               </label>
               <Field
+                className="form-control text-dark w-100"
                 name="fruit"
                 items={fruit}
                 component={DownshiftInput}
-                placeholder="Favorite Fruit"
+                placeholder="Skriv för att söka eller lägga till en rätt..."
               />
               <Error name="fruit" />
             </div>
             <div className="buttons">
-              <button type="submit" disabled={submitting}>
-                Submit
-              </button>
               <button
+                type="submit"
+                disabled={submitting}
+                className="btn btn-dark w-100 text-nowrap overflow-hidden">
+                Skapa
+              </button>
+              {/* <button
+                className="btn btn-dark w-100 text-nowrap overflow-hidden"
                 type="button"
                 onClick={form.reset}
                 disabled={submitting || pristine}>
                 Reset
-              </button>
+              </button> */}
             </div>
             <pre>{JSON.stringify(values, 0, 2)}</pre>
           </form>
