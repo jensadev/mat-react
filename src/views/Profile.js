@@ -7,7 +7,7 @@ function ProfileComponent() {
   const { user } = useAuth0();
 
   return (
-    <div>
+    <div className="container bg-light text-dark">
       <img
         src={user.picture}
         alt="Profile"
