@@ -2,9 +2,10 @@ import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import Dashbar from '../components/Dashbar';
 import Loading from '../components/Loading';
+import MealForm from '../components/MealForm';
 import MealsList from '../components/MealsList';
-
 function MealsComponent() {
   // console.table(user);
   // const sub = String(user.sub).split('|')[1];
@@ -51,11 +52,10 @@ function MealsComponent() {
 
   return (
     <div className="h-100 d-flex flex-column">
-      {/* <Navbar />
-      <Dashbar /> */}
+      <Dashbar />
       <main className="container mt-3">
         <div className="my-3">
-          {/* <MealForm userId={user.data.id} parentCallback={handleCallback} /> */}
+          <MealForm />
         </div>
         <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
           <h6 className="border-bottom border-gray pb-2 mb-0">

@@ -2,6 +2,7 @@
 import './MealForm.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import { useAuth0 } from '@auth0/auth0-react';
 import { format } from 'date-fns';
 import sv from 'date-fns/locale/sv'; // the locale you want
 // // import Downshift from 'downshift';
@@ -11,30 +12,50 @@ registerLocale('sv', sv); // register it with the name you want
 // import { formatISO } from 'date-fns';
 import { Field, Form } from 'react-final-form';
 
-import MealsDataService from '../services/meals.service';
-import UserDataService from '../services/user.service';
 import DownshiftInput from './DownshiftInput';
 // import fruit from './fruit';
 
-function MealForm(props) {
-  const [dishes, setDishes] = useState([]);
+function MealForm() {
   const [today] = useState(new Date());
-  useEffect(() => {
-    UserDataService.getAllDishes(props.userId).then(
-      (response) => {
-        setDishes(response.data);
-        // console.log(dishes);
-      },
-      (error) => {
-        const _content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
+  const apiOrigin = 'http://localhost:8080/api';
 
-        setDishes(_content);
+  const [state, setState] = useState({
+    showResult: false,
+    apiMessage: '',
+    error: null
+  });
+
+  const { getAccessTokenSilently } = useAuth0();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const token = await getAccessTokenSilently();
+
+        const response = await fetch(`${apiOrigin}/users/dishes`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        const responseData = await response.json();
+
+        console.table(responseData);
+
+        setState({
+          ...state,
+          showResult: true,
+          apiMessage: responseData
+        });
+      } catch (error) {
+        setState({
+          ...state,
+          error: error.error
+        });
       }
-    );
-  }, [props.userId]);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getAccessTokenSilently]);
 
   const DatePickerAdapter = ({ input: { onChange, value }, ...rest }) => (
     <DatePicker
@@ -50,14 +71,14 @@ function MealForm(props) {
     await sleep(1000);
     window.alert(JSON.stringify(values, 0, 2));
 
-    MealsDataService.create(values)
-      .then((response) => {
-        console.log(response.data);
-        props.parentCallback(response);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
+    // MealsDataService.create(values)
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     props.parentCallback(response);
+    //   })
+    //   .catch((e) => {
+    //     console.error(e);
+    //   });
   };
 
   const validate = (values) => {
@@ -130,7 +151,7 @@ function MealForm(props) {
                 <Field
                   className="form-control text-dark w-100"
                   name="dish"
-                  items={dishes}
+                  items={state.showResult && state.apiMessage}
                   component={DownshiftInput}
                   placeholder="Skriv för att söka eller lägga till en rätt..."
                 />
