@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 import authHeader from './auth-header';
-
 const http = axios.create({
   baseURL: 'http://localhost:8080/api',
   headers: {
@@ -10,6 +9,9 @@ const http = axios.create({
 });
 
 class UserDataService {
+  // check(sub) {
+  //   return http.post(`/users/check`, { headers: authHeader() });
+  // }
   getAllMeals(id) {
     return http.get(`/users/${id}/meals`, { headers: authHeader() });
   }

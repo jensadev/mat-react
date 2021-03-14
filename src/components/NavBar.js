@@ -51,8 +51,8 @@ function NavBar() {
             </li>
             {isAuthenticated && (
               <li className="nav-item">
-                <Link tag={NavLink} to="/external-api" className="nav-link">
-                  External API
+                <Link tag={NavLink} to="/meals" className="nav-link">
+                  Meals
                 </Link>
               </li>
             )}

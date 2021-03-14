@@ -14,6 +14,7 @@ import NavBar from './components/NavBar';
 import history from './utils/history';
 import ExternalApi from './views/ExternalApi';
 import Home from './views/Home';
+import Meals from './views/Meals';
 import Profile from './views/Profile';
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/profile" component={Profile} />
+            <Route path="/meals" component={Meals} />
             <Route path="/external-api" component={ExternalApi} />
           </Switch>
         </div>
