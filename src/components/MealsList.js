@@ -20,7 +20,7 @@ function ListItem(props) {
   return (
     <div className="d-flex pt-3 text-dark border-bottom">
       <div className="mealicon">
-        <span className="material-icons-outlined">schedule</span>
+        <span className="material-icons-round">schedule</span>
       </div>
       <p className="pb-3 mb-0 lh-sm text-dark">
         <Date classes={'d-block small'} dateString={meal.date} />
