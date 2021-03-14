@@ -18,12 +18,12 @@ import DownshiftInput from './DownshiftInput';
 function MealForm() {
   const [today] = useState(new Date());
   const apiOrigin = 'http://localhost:8080/api';
-
-  const [state, setState] = useState({
-    showResult: false,
-    apiMessage: '',
-    error: null
-  });
+  const [dishes, setDishes] = useState([]);
+  // const [state, setState] = useState({
+  //   showResult: false,
+  //   apiMessage: '',
+  //   error: null
+  // });
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -41,17 +41,20 @@ function MealForm() {
         const responseData = await response.json();
 
         console.table(responseData);
-
-        setState({
-          ...state,
-          showResult: true,
-          apiMessage: responseData
-        });
+        if (responseData) {
+          setDishes(responseData);
+        }
+        // setState({
+        //   ...state,
+        //   showResult: responseData == false ? false : true,
+        //   apiMessage: responseData
+        // });
       } catch (error) {
-        setState({
-          ...state,
-          error: error.error
-        });
+        console.log(error);
+        // setState({
+        //   ...state,
+        //   error: error.error
+        // });
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,20 +68,40 @@ function MealForm() {
     />
   );
 
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  // const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const onSubmit = async (values) => {
-    await sleep(1000);
+    // await sleep(1000);
     window.alert(JSON.stringify(values, 0, 2));
 
-    // MealsDataService.create(values)
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     props.parentCallback(response);
-    //   })
-    //   .catch((e) => {
-    //     console.error(e);
-    //   });
+    try {
+      const token = await getAccessTokenSilently();
+
+      const response = await fetch(`${apiOrigin}/meals`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(values)
+      });
+
+      const responseData = await response.json();
+
+      console.table(responseData);
+
+      // setState({
+      //   ...state,
+      //   showResult: responseData == false ? false : true,
+      //   apiMessage: responseData
+      // });
+    } catch (error) {
+      console.error(error);
+      // setState({
+      //   ...state,
+      //   error: error.error
+      // });
+    }
   };
 
   const validate = (values) => {
@@ -151,7 +174,7 @@ function MealForm() {
                 <Field
                   className="form-control text-dark w-100"
                   name="dish"
-                  items={state.showResult && state.apiMessage}
+                  items={dishes ? dishes : []}
                   component={DownshiftInput}
                   placeholder="Skriv för att söka eller lägga till en rätt..."
                 />

@@ -67,7 +67,7 @@ $body-color: $my-white;
 // Bootstrap and its default variables
 @import "../node_modules/bootstrap/scss/bootstrap";
 
-.bg-white, .form-control {
+.bg-white {
   background-color: rgba(255, 255, 255, .8) !important;
 }
 .page-link {

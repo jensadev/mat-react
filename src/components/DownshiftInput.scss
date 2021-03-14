@@ -14,7 +14,8 @@
 
 }
   .downshift-option {
-    background-color: rgba(255, 255, 255, .8) !important;
+    // background-color: rgba(255, 255, 255, .8) !important;
+    background-color: var(--bs-white);
     padding: 0.375rem 0.75rem;
     border-top: 1px solid var(--bs-primary);
     cursor: pointer;

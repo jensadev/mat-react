@@ -11,12 +11,12 @@ function MealsComponent() {
   // const sub = String(user.sub).split('|')[1];
   // console.log(sub);
   const apiOrigin = 'http://localhost:8080/api';
-
-  const [state, setState] = useState({
-    showResult: false,
-    apiMessage: '',
-    error: null
-  });
+  const [meals, setMeals] = useState([]);
+  // const [state, setState] = useState({
+  //   showResult: false,
+  //   apiMessage: '',
+  //   error: null
+  // });
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -34,20 +34,22 @@ function MealsComponent() {
         const responseData = await response.json();
 
         console.table(responseData);
-
-        setState({
-          ...state,
-          showResult: true,
-          apiMessage: responseData
-        });
+        if (responseData) {
+          setMeals(responseData);
+        }
+        // setState({
+        //   ...state,
+        //   showResult: responseData == false ? false : true,
+        //   apiMessage: responseData
+        // });
       } catch (error) {
-        setState({
-          ...state,
-          error: error.error
-        });
+        console.log(error);
+        // setState({
+        //   ...state,
+        //   error: error.error
+        // });
       }
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getAccessTokenSilently]);
 
   return (
@@ -61,7 +63,7 @@ function MealsComponent() {
           <h6 className="border-bottom border-gray pb-2 mb-0">
             Senaste måltider
           </h6>
-          {state.showResult && <MealsList meals={state.apiMessage} />}
+          {meals && <MealsList meals={meals} />}
           <nav className="pt-3" aria-label="Page navigation example">
             <ul className="pagination justify-content-center mb-2">
               <li className="page-item disabled">

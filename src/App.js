@@ -32,14 +32,12 @@ function App() {
     <Router history={history}>
       <div id="app" className="d-flex flex-column h-100">
         <NavBar />
-        <div className="flex-grow-1 mt-5">
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/profile" component={Profile} />
-            <Route path="/meals" component={Meals} />
-            <Route path="/external-api" component={ExternalApi} />
-          </Switch>
-        </div>
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/profile" component={Profile} />
+          <Route path="/meals" component={Meals} />
+          <Route path="/external-api" component={ExternalApi} />
+        </Switch>
         <Footer />
         <Logo />
       </div>
