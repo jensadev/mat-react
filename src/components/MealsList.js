@@ -1,5 +1,6 @@
 import './MealsList.scss';
 
+import { useAuth0 } from '@auth0/auth0-react';
 // import ScheduleIcon from '@material-ui/icons/ScheduleRounded';
 import {
   // DeleteOutlineRounded,
@@ -12,11 +13,6 @@ import {
 import { Field, Form } from 'react-final-form';
 
 import Date from './Date';
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const onSubmit = async (values) => {
-  await sleep(300);
-  window.alert(JSON.stringify(values, 0, 2));
-};
 
 function ListItem(props) {
   const TypeIcon = (type) => {
@@ -29,6 +25,39 @@ function ListItem(props) {
         return <RestaurantMenuRounded />;
       default:
         return 'tom';
+    }
+  };
+  const apiOrigin = 'http://localhost:8080/api';
+  const { getAccessTokenSilently } = useAuth0();
+  const onSubmit = async (values) => {
+    window.alert(JSON.stringify(values, 0, 2));
+    if (values.action == 'delete') {
+      try {
+        const token = await getAccessTokenSilently();
+
+        const response = await fetch(`${apiOrigin}/meals/${values.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        const responseData = await response.json();
+        console.log(responseData);
+        // props.parentCallback(responseData);
+        // setState({
+        //   ...state,
+        //   showResult: responseData == false ? false : true,
+        //   apiMessage: responseData
+        // });
+      } catch (error) {
+        console.error(error);
+        // setState({
+        //   ...state,
+        //   error: error.error
+        // });
+      }
     }
   };
 
