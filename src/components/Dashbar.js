@@ -1,3 +1,5 @@
+import './Dashbar.scss';
+
 import { Link } from 'react-router-dom';
 
 function Dashbar() {

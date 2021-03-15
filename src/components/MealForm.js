@@ -1,21 +1,18 @@
-// import 'moment/locale/sv';
 import './MealForm.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import { useAuth0 } from '@auth0/auth0-react';
 import { format } from 'date-fns';
-import sv from 'date-fns/locale/sv'; // the locale you want
-// // import Downshift from 'downshift';
+import sv from 'date-fns/locale/sv';
 import { useEffect, useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
-registerLocale('sv', sv); // register it with the name you want
-// import { formatISO } from 'date-fns';
+registerLocale('sv', sv);
+
 import { Field, Form } from 'react-final-form';
 
 import DownshiftInput from './DownshiftInput';
-// import fruit from './fruit';
 
-function MealForm() {
+function MealForm(props) {
   const [today] = useState(new Date());
   const apiOrigin = 'http://localhost:8080/api';
   const [dishes, setDishes] = useState([]);
@@ -40,7 +37,7 @@ function MealForm() {
 
         const responseData = await response.json();
 
-        console.table(responseData);
+        // console.table(responseData);
         if (responseData) {
           setDishes(responseData);
         }
@@ -88,8 +85,7 @@ function MealForm() {
 
       const responseData = await response.json();
 
-      console.table(responseData);
-
+      props.parentCallback(responseData);
       // setState({
       //   ...state,
       //   showResult: responseData == false ? false : true,
@@ -142,12 +138,7 @@ function MealForm() {
             <div className="row gy-2 gx-3 align-items-center justify-content-md-between h6">
               <div className="col-sm-3 col-lg-2 col-xl-auto text-nowrap text-capitalize-first">
                 {values.date && format(values.date, 'eeee', { locale: sv })} den
-                {/* {values.date &&
-                  values.date.toDateString() == today.toDateString() &&
-                  'idag, '}
-                den */}
               </div>
-
               <div className="col-sm-9 col-lg-2 col-xl-2">
                 <label htmlFor="date" className="form-label visually-hidden">
                   datum
@@ -155,6 +146,7 @@ function MealForm() {
                 <Field
                   className="form-control text-dark w-100"
                   defaultValue={today}
+                  id="date"
                   name="date"
                   locale={sv}
                   dateFormat="do LLLL"
@@ -173,6 +165,7 @@ function MealForm() {
                 </label>
                 <Field
                   className="form-control text-dark w-100"
+                  id="dish"
                   name="dish"
                   items={dishes ? dishes : []}
                   component={DownshiftInput}
@@ -182,10 +175,11 @@ function MealForm() {
               </div>
               <div className="col-sm-3 col-lg-2 col-xl-auto">till </div>
               <div className="col-sm-9 col-lg-2 col-xl-auto">
-                <label htmlFor="type" className="form-label visually-hidden">
+                <label htmlFor="type_id" className="form-label visually-hidden">
                   typ av mål
                 </label>
                 <Field
+                  id="type_id"
                   name="type_id"
                   component="select"
                   defaultValue="3"

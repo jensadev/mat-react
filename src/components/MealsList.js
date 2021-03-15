@@ -28,7 +28,7 @@ function ListItem(props) {
     <div className="d-flex pt-3 text-dark border-bottom">
       <div className="mealicon">{TypeIcon(meal.typeId)}</div>
       <p className="pb-3 mb-0 lh-sm text-dark">
-        <Date classes={'d-block small'} dateString={meal.date} />
+        <Date classes={'d-block small text-muted'} dateString={meal.date} />
         {meal.dish}
       </p>
     </div>

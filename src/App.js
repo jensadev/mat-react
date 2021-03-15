@@ -4,6 +4,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 // import { useAuth0 } from '@auth0/auth0-react';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
+import CookieConsent from 'react-cookie-consent';
 import { Route, Router, Switch } from 'react-router-dom';
 
 import Footer from './components/Footer';
@@ -40,6 +41,14 @@ function App() {
         </Switch>
         <Footer />
         <Logo />
+        <CookieConsent
+          disableButtonStyles="true"
+          buttonClasses="btn btn-light btn-outline-dark m-3"
+          buttonText="Jag accepterar cookies"
+          contentClasses="pb-3">
+          Vi använder cookies för att ge dig en bättre upplevelse av vår
+          webbplats.
+        </CookieConsent>
       </div>
     </Router>
   );

@@ -24,7 +24,7 @@ function NavBar() {
           <img
             className="navbar-logo"
             src="/images/tallrik.svg"
-            alt=""
+            alt="Logotyp"
             width="32"
             height="32"
           />

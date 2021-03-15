@@ -17,6 +17,11 @@ function MealsComponent() {
   //   apiMessage: '',
   //   error: null
   // });
+  const [test, setTest] = useState(false);
+  const handleCallback = (childData) => {
+    setTest(childData);
+    // console.log(childData);
+  };
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -33,7 +38,6 @@ function MealsComponent() {
 
         const responseData = await response.json();
 
-        console.table(responseData);
         if (responseData) {
           setMeals(responseData);
         }
@@ -50,14 +54,14 @@ function MealsComponent() {
         // });
       }
     })();
-  }, [getAccessTokenSilently]);
+  }, [getAccessTokenSilently, test]);
 
   return (
     <div className="h-100 d-flex flex-column">
       <Dashbar />
       <main className="container mt-3">
         <div className="my-3">
-          <MealForm />
+          <MealForm parentCallback={handleCallback} />
         </div>
         <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
           <h6 className="border-bottom border-gray pb-2 mb-0">
