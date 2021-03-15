@@ -7,54 +7,54 @@ import Loading from '../components/Loading';
 import MealForm from '../components/MealForm';
 import MealsList from '../components/MealsList';
 function MealsComponent() {
-  // console.table(user);
-  // const sub = String(user.sub).split('|')[1];
-  // console.log(sub);
   const apiOrigin = 'http://localhost:8080/api';
-  const [meals, setMeals] = useState([]);
-  // const [state, setState] = useState({
-  //   showResult: false,
-  //   apiMessage: '',
-  //   error: null
-  // });
+  // const [meals, setMeals] = useState([]);
+
+  const [pager, setPager] = useState(false);
+  const [pageOfItems, setPageOfItems] = useState([]);
   const [test, setTest] = useState(false);
   const handleCallback = (childData) => {
     setTest(childData);
-    // console.log(childData);
   };
 
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     (async () => {
+      const params = new URLSearchParams(location.search);
+      const page = parseInt(params.get('page')) || 1;
+      // if (page !== this.state.pager.currentPage) {
+      //   fetch(`/api/items?page=${page}`, { method: 'GET' })
+      //     .then((response) => response.json())
+      //     .then(({ pager, pageOfItems }) => {
+      //       this.setState({ pager, pageOfItems });
+      //     });
+      // }
+      // console.log(pager.currentPage);
       try {
         const token = await getAccessTokenSilently();
+        if (page !== pager.currentPage) {
+          const response = await fetch(
+            `${apiOrigin}/users/meals?page=${page}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            }
+          );
 
-        const response = await fetch(`${apiOrigin}/users/meals`, {
-          headers: {
-            Authorization: `Bearer ${token}`
+          const responseData = await response.json();
+
+          if (responseData.pager != 'undefined') {
+            setPager(responseData.pager);
+            setPageOfItems(responseData.pageOfItems);
           }
-        });
-
-        const responseData = await response.json();
-
-        if (responseData) {
-          setMeals(responseData);
         }
-        // setState({
-        //   ...state,
-        //   showResult: responseData == false ? false : true,
-        //   apiMessage: responseData
-        // });
       } catch (error) {
         console.log(error);
-        // setState({
-        //   ...state,
-        //   error: error.error
-        // });
       }
     })();
-  }, [getAccessTokenSilently, test]);
+  }, [getAccessTokenSilently, pager, test]);
 
   return (
     <div className="h-100 d-flex flex-column">
@@ -63,69 +63,71 @@ function MealsComponent() {
         <div className="my-3">
           <MealForm parentCallback={handleCallback} />
         </div>
-        <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
-          <h6 className="border-bottom border-gray pb-2 mb-0">
-            Senaste måltider
-          </h6>
-          {meals && <MealsList meals={meals} />}
-          <nav className="pt-3" aria-label="Page navigation example">
-            <ul className="pagination justify-content-center mb-2">
-              <li className="page-item disabled">
-                <Link
-                  className="page-link"
-                  to="#"
-                  tabIndex="-1"
-                  aria-label="Previous"
-                  aria-disabled="true">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    className="mb-1"
-                    viewBox="0 0 16 16">
-                    <path
-                      fillRule="evenodd"
-                      d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
-                    />
-                  </svg>
-                </Link>
-              </li>
-              <li className="page-item">
-                <Link className="page-link" to="#">
-                  1
-                </Link>
-              </li>
-              <li className="page-item">
-                <Link className="page-link" to="#">
-                  2
-                </Link>
-              </li>
-              <li className="page-item">
-                <Link className="page-link" to="#">
-                  3
-                </Link>
-              </li>
-              <li className="page-item">
-                <Link className="page-link" to="#" aria-label="Next">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    className="mb-1"
-                    viewBox="0 0 16 16">
-                    <path
-                      fillRule="evenodd"
-                      d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
-                    />
-                  </svg>
-                </Link>
-              </li>
-            </ul>
-          </nav>
-        </div>
-
+        {pager && (
+          <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
+            <h6 className="border-bottom border-gray pb-2 mb-0">
+              Senaste måltider
+            </h6>
+            <MealsList meals={pageOfItems} />
+            <nav className="pt-3">
+              {pager.pages && pager.pages.length && (
+                <ul className="pagination">
+                  <li
+                    className={`page-item first-item ${
+                      pager.currentPage === 1 ? 'disabled' : ''
+                    }`}>
+                    <Link to={{ search: `?page=1` }} className="page-link">
+                      First
+                    </Link>
+                  </li>
+                  <li
+                    className={`page-item previous-item ${
+                      pager.currentPage === 1 ? 'disabled' : ''
+                    }`}>
+                    <Link
+                      to={{ search: `?page=${pager.currentPage - 1}` }}
+                      className="page-link">
+                      Previous
+                    </Link>
+                  </li>
+                  {pager.pages.map((page) => (
+                    <li
+                      key={page}
+                      className={`page-item number-item ${
+                        pager.currentPage === page ? 'active' : ''
+                      }`}>
+                      <Link
+                        to={{ search: `?page=${page}` }}
+                        className="page-link">
+                        {page}
+                      </Link>
+                    </li>
+                  ))}
+                  <li
+                    className={`page-item next-item ${
+                      pager.currentPage === pager.totalPages ? 'disabled' : ''
+                    }`}>
+                    <Link
+                      to={{ search: `?page=${pager.currentPage + 1}` }}
+                      className="page-link">
+                      Next
+                    </Link>
+                  </li>
+                  <li
+                    className={`page-item last-item ${
+                      pager.currentPage === pager.totalPages ? 'disabled' : ''
+                    }`}>
+                    <Link
+                      to={{ search: `?page=${pager.totalPages}` }}
+                      className="page-link">
+                      Last
+                    </Link>
+                  </li>
+                </ul>
+              )}
+            </nav>
+          </div>
+        )}
         <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
           <h6 className="border-bottom border-gray pb-2 mb-0">Förslag</h6>
           <div className="media text-muted pt-3">

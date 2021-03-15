@@ -26,7 +26,6 @@ function MealForm(props) {
 
   useEffect(() => {
     (async () => {
-      console.log('trigger');
       try {
         const token = await getAccessTokenSilently();
 
