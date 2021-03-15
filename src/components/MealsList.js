@@ -29,6 +29,7 @@ function ListItem(props) {
   };
   const apiOrigin = 'http://localhost:8080/api';
   const { getAccessTokenSilently } = useAuth0();
+
   const onSubmit = async (values) => {
     window.alert(JSON.stringify(values, 0, 2));
     if (values.action == 'delete') {
@@ -97,7 +98,9 @@ function ListItem(props) {
                 className="btn btn-outline-dark border-0"
                 disabled={submitting}
                 onClick={() => {
-                  form.change('action', 'delete');
+                  window.confirm('Är du säker på att du vill ta bort måltiden?')
+                    ? form.change('action', 'delete')
+                    : null;
                 }}>
                 <DeleteRounded />
               </button>

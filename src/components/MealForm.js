@@ -26,6 +26,7 @@ function MealForm(props) {
 
   useEffect(() => {
     (async () => {
+      console.log('trigger');
       try {
         const token = await getAccessTokenSilently();
 
@@ -54,7 +55,6 @@ function MealForm(props) {
         // });
       }
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getAccessTokenSilently]);
 
   const DatePickerAdapter = ({ input: { onChange, value }, ...rest }) => (
