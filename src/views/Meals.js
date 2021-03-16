@@ -10,11 +10,13 @@ function MealsComponent() {
   const apiOrigin = 'http://localhost:8080/api';
   // const [meals, setMeals] = useState([]);
 
-  const [pager, setPager] = useState(false);
+  const [pager, setPager] = useState({});
   const [pageOfItems, setPageOfItems] = useState([]);
-  const [test, setTest] = useState(false);
+  // const [test, setTest] = useState(false);
   const handleCallback = (childData) => {
-    setTest(childData);
+    // setTest(childData);
+    console.log(childData);
+    setPager({});
   };
 
   const { getAccessTokenSilently } = useAuth0();
@@ -45,6 +47,8 @@ function MealsComponent() {
 
           const responseData = await response.json();
 
+          // console.table(responseData);
+
           if (responseData.pager != 'undefined') {
             setPager(responseData.pager);
             setPageOfItems(responseData.pageOfItems);
@@ -54,7 +58,8 @@ function MealsComponent() {
         console.log(error);
       }
     })();
-  }, [getAccessTokenSilently, pager, test]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getAccessTokenSilently, pager.currentPage, location.search]);
 
   return (
     <div className="h-100 d-flex flex-column">
@@ -63,71 +68,69 @@ function MealsComponent() {
         <div className="my-3">
           <MealForm parentCallback={handleCallback} />
         </div>
-        {pager && (
-          <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
-            <h6 className="border-bottom border-gray pb-2 mb-0">
-              Senaste måltider
-            </h6>
-            <MealsList meals={pageOfItems} />
-            <nav className="pt-3">
-              {pager.pages && pager.pages.length && (
-                <ul className="pagination">
+        <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
+          <h6 className="border-bottom border-gray pb-2 mb-0">
+            Senaste måltider
+          </h6>
+          <MealsList meals={pageOfItems} />
+          <nav className="pt-3">
+            {pager.pages && pager.pages.length && (
+              <ul className="pagination">
+                <li
+                  className={`page-item first-item ${
+                    pager.currentPage === 1 ? 'disabled' : ''
+                  }`}>
+                  <Link to={{ search: `?page=1` }} className="page-link">
+                    First
+                  </Link>
+                </li>
+                <li
+                  className={`page-item previous-item ${
+                    pager.currentPage === 1 ? 'disabled' : ''
+                  }`}>
+                  <Link
+                    to={{ search: `?page=${pager.currentPage - 1}` }}
+                    className="page-link">
+                    Previous
+                  </Link>
+                </li>
+                {pager.pages.map((page) => (
                   <li
-                    className={`page-item first-item ${
-                      pager.currentPage === 1 ? 'disabled' : ''
-                    }`}>
-                    <Link to={{ search: `?page=1` }} className="page-link">
-                      First
-                    </Link>
-                  </li>
-                  <li
-                    className={`page-item previous-item ${
-                      pager.currentPage === 1 ? 'disabled' : ''
-                    }`}>
-                    <Link
-                      to={{ search: `?page=${pager.currentPage - 1}` }}
-                      className="page-link">
-                      Previous
-                    </Link>
-                  </li>
-                  {pager.pages.map((page) => (
-                    <li
-                      key={page}
-                      className={`page-item number-item ${
-                        pager.currentPage === page ? 'active' : ''
-                      }`}>
-                      <Link
-                        to={{ search: `?page=${page}` }}
-                        className="page-link">
-                        {page}
-                      </Link>
-                    </li>
-                  ))}
-                  <li
-                    className={`page-item next-item ${
-                      pager.currentPage === pager.totalPages ? 'disabled' : ''
+                    key={page}
+                    className={`page-item number-item ${
+                      pager.currentPage === page ? 'active' : ''
                     }`}>
                     <Link
-                      to={{ search: `?page=${pager.currentPage + 1}` }}
+                      to={{ search: `?page=${page}` }}
                       className="page-link">
-                      Next
+                      {page}
                     </Link>
                   </li>
-                  <li
-                    className={`page-item last-item ${
-                      pager.currentPage === pager.totalPages ? 'disabled' : ''
-                    }`}>
-                    <Link
-                      to={{ search: `?page=${pager.totalPages}` }}
-                      className="page-link">
-                      Last
-                    </Link>
-                  </li>
-                </ul>
-              )}
-            </nav>
-          </div>
-        )}
+                ))}
+                <li
+                  className={`page-item next-item ${
+                    pager.currentPage === pager.totalPages ? 'disabled' : ''
+                  }`}>
+                  <Link
+                    to={{ search: `?page=${pager.currentPage + 1}` }}
+                    className="page-link">
+                    Next
+                  </Link>
+                </li>
+                <li
+                  className={`page-item last-item ${
+                    pager.currentPage === pager.totalPages ? 'disabled' : ''
+                  }`}>
+                  <Link
+                    to={{ search: `?page=${pager.totalPages}` }}
+                    className="page-link">
+                    Last
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </nav>
+        </div>
         <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
           <h6 className="border-bottom border-gray pb-2 mb-0">Förslag</h6>
           <div className="media text-muted pt-3">
