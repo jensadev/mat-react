@@ -3,16 +3,16 @@ import './Logo.scss';
 function Logo() {
   return (
     <div className="position-absolute top-50 start-50 translate-middle d-flex align-items-center logo-container">
-      <img
+      {/* <img
         className="logo"
         src="/images/tallrik-bg.svg"
         alt="Källa: https://www.livsmedelsverket.se/"
-      />
-      {/* <svg
+      /> */}
+      <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 495 495"
         className="logo"
-        alt="Source: https://www.livsmedelsverket.se/">
+        alt="Källa: https://www.livsmedelsverket.se/">
         <g id="Layer_2" data-name="Layer 2">
           <g id="Lager_1" data-name="Lager 1">
             <path
@@ -134,7 +134,7 @@ function Logo() {
             />
           </g>
         </g>
-      </svg> */}
+      </svg>
     </div>
   );
 }

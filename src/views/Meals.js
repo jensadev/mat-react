@@ -1,5 +1,11 @@
 import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
-import React, { useEffect, useState } from 'react';
+import {
+  FirstPageRounded,
+  LastPageRounded,
+  NavigateBeforeRounded,
+  NavigateNextRounded
+} from '@material-ui/icons';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Dashbar from '../components/Dashbar';
@@ -62,9 +68,9 @@ function MealsComponent() {
   }, [getAccessTokenSilently, pager.currentPage, location.search]);
 
   return (
-    <div className="h-100 d-flex flex-column">
+    <Fragment>
       <Dashbar />
-      <main className="container mt-3">
+      <main className="h-100 d-flex flex-column container mt-3">
         <div className="my-3">
           <MealForm parentCallback={handleCallback} />
         </div>
@@ -75,13 +81,13 @@ function MealsComponent() {
           <MealsList meals={pageOfItems} />
           <nav className="pt-3">
             {pager.pages && pager.pages.length && (
-              <ul className="pagination">
+              <ul className="pagination justify-content-center">
                 <li
                   className={`page-item first-item ${
                     pager.currentPage === 1 ? 'disabled' : ''
                   }`}>
                   <Link to={{ search: `?page=1` }} className="page-link">
-                    First
+                    <FirstPageRounded />
                   </Link>
                 </li>
                 <li
@@ -91,7 +97,7 @@ function MealsComponent() {
                   <Link
                     to={{ search: `?page=${pager.currentPage - 1}` }}
                     className="page-link">
-                    Previous
+                    <NavigateBeforeRounded />
                   </Link>
                 </li>
                 {pager.pages.map((page) => (
@@ -114,7 +120,7 @@ function MealsComponent() {
                   <Link
                     to={{ search: `?page=${pager.currentPage + 1}` }}
                     className="page-link">
-                    Next
+                    <NavigateNextRounded />
                   </Link>
                 </li>
                 <li
@@ -124,7 +130,7 @@ function MealsComponent() {
                   <Link
                     to={{ search: `?page=${pager.totalPages}` }}
                     className="page-link">
-                    Last
+                    <LastPageRounded />
                   </Link>
                 </li>
               </ul>
@@ -181,7 +187,7 @@ function MealsComponent() {
         </div>
       </main>
       {/* <Footer /> */}
-    </div>
+    </Fragment>
   );
 
   //   return (

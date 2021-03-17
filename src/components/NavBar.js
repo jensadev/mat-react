@@ -46,13 +46,13 @@ function NavBar() {
           <ul className="me-auto navbar-nav">
             <li className="nav-item">
               <Link tag={NavLink} to="/" className="nav-link">
-                Home
+                Start
               </Link>
             </li>
             {isAuthenticated && (
               <li className="nav-item">
                 <Link tag={NavLink} to="/meals" className="nav-link">
-                  Meals
+                  Måltider
                 </Link>
               </li>
             )}
@@ -64,7 +64,7 @@ function NavBar() {
                   id="qsLoginBtn"
                   className="btn btn-primary"
                   onClick={() => loginWithRedirect()}>
-                  Log in
+                  Logga in
                 </button>
               </li>
             )}
@@ -89,7 +89,7 @@ function NavBar() {
                   <li className="dropdown-item">{user.name}</li>
                   <li>
                     <Link to="/profile" className="dropdown-item">
-                      Profile
+                      Min profil
                     </Link>
                   </li>
                   <li>
@@ -100,7 +100,7 @@ function NavBar() {
                       className="btn btn-link"
                       id="qsLogoutBtn"
                       onClick={() => logoutWithRedirect()}>
-                      Log out
+                      Logga ut
                     </button>
                   </li>
                 </ul>
