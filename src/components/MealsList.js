@@ -86,7 +86,7 @@ function ListItem(props) {
               />
               <button
                 type="submit"
-                className="btn btn-outline-dark border-0"
+                className="btn btn-outline-danger border-0"
                 disabled={submitting}
                 onClick={() => {
                   form.change('action', 'edit');
@@ -95,7 +95,7 @@ function ListItem(props) {
               </button>
               <button
                 type="submit"
-                className="btn btn-outline-dark border-0"
+                className="btn btn-outline-danger border-0"
                 disabled={submitting}
                 onClick={() => {
                   window.confirm('Är du säker på att du vill ta bort måltiden?')

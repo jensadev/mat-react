@@ -18,16 +18,10 @@ function NavBar() {
     });
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-transparent">
+    <nav className="navbar navbar-expand-lg navbar-primary bg-light box-shadow">
       <div className="container-fluid">
         <Link className="navbar-brand" to={'/'}>
-          <img
-            className="navbar-logo"
-            src="/images/tallrik.svg"
-            alt="Logotyp"
-            width="32"
-            height="32"
-          />
+          Brand
         </Link>
         <button
           className="navbar-toggler"
@@ -72,7 +66,7 @@ function NavBar() {
               <li className="nav-item dropdown">
                 <a
                   role="button"
-                  className="nav-link dropdown-toggle"
+                  className="nav-link"
                   id="navbarDropdown"
                   data-bs-toggle="dropdown"
                   aria-expanded="false">
@@ -84,7 +78,7 @@ function NavBar() {
                   />
                 </a>
                 <ul
-                  className="dropdown-menu dropdown-menu-end text-dark"
+                  className="dropdown-menu dropdown-menu-end"
                   aria-labelledby="navbarDropdown">
                   <li className="dropdown-item">{user.name}</li>
                   <li>

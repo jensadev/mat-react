@@ -1,86 +1,172 @@
-@import "../node_modules/bootstrap/scss/bootstrap";
-// $blue:    #0d6efd;
-// $indigo:  #6610f2;
-// $purple:  #6f42c1;
-// $pink:    #d63384;
-// $red:     #dc3545;
-// $orange:  #fd7e14;
-// $yellow:  #ffc107;
-// $green:   #198754;
-// $teal:    #20c997;
-// $cyan:    #0dcaf0;
+// Custom.scss
+// Option B: Include parts of Bootstrap
 
-// // $my-red: #F83E63;
-// // $my-orange: #F78661;
-// // $my-green: #61CE93;
-// // $my-purple: #A180E9;
-// // $my-yellow: #FDE6BC;
-// // // $my-dark: #3C213D;
-// // $my-dark: #251c38;
-// // $my-white: #F8F7F9;
-
-// $white:    #fff;
-// $gray-100: #f8f9fa;
-// $gray-200: #e9ecef;
-// $gray-300: #dee2e6;
-// $gray-400: #ced4da;
-// $gray-500: #adb5bd;
-// $gray-600: #6c757d;
-// $gray-700: #495057;
-// $gray-800: #343a40;
-// $gray-900: #212529;
-// $black:    #000;
-
-$primary:       #e04439;
-$secondary:     #5abab6;
-$success:       $green;
-$info:          $cyan;
-$warning:       $yellow;
-$danger:        $red;
-$light:         #ffe5db;
-$dark:          $gray-900;
-
-@each $color, $value in $theme-colors {
-  .swatch-#{$color} {
-    color: color-contrast($value);
-  }
-}
+@import "../node_modules/bootstrap/scss/functions"; // Required
+@import "../node_modules/bootstrap/scss/variables"; // Required
+@import "../node_modules/bootstrap/scss/mixins"; // Required
+// @import "../node_modules/bootstrap/scss/utilities"; // Required
 
 
-// $theme-colors: (
-//   "primary":    $primary,
-//   "secondary":  $secondary,
-//   "success":    $success,
-//   "info":       $info,
-//   "warning":    $warning,
-//   "danger":     $danger,
-//   "light":      $light,
-//   "dark":       $dark
-// );
 
-// $font-family-base: 
-$font-size-base: 1.2rem;
+
+
+$light: rgb(255, 246, 233);
+
+$gray-100: tint-color($light, 80%);
+$gray-200: tint-color($light, 60%);
+$gray-300: tint-color($light, 40%);
+$gray-400: tint-color($light, 20%);
+$gray-500: $light;
+$gray-600: shade-color($light, 20%);
+$gray-700: shade-color($light, 40%);
+$gray-800: shade-color($light, 60%);
+$gray-900: shade-color($light, 80%);
+$black: rgb(75, 67,67);
+$white: $gray-200;
+
+$grays: (
+  "100": $gray-100,
+  "200": $gray-200,
+  "300": $gray-300,
+  "400": $gray-400,
+  "500": $gray-500,
+  "600": $gray-600,
+  "700": $gray-700,
+  "800": $gray-800,
+  "900": $gray-900
+);
+
+$primary:       rgb(125, 20, 22);// rgb(201, 83, 66);   // #ed3c21;
+$secondary:     #51c0b4;
+$success:       rgb(150,204,125);
+$info:          rgb(175,227,227);
+$warning:       rgb(255,228,134);
+$danger:        rgb(212,106, 80);
+$light:         $gray-400;
+$dark:         $gray-900;
+
+$colors: (
+  "blue":       $blue,
+  "indigo":     $indigo,
+  "purple":     $purple,
+  "pink":       $pink,
+  "red":        $red,
+  "orange":     $orange,
+  "yellow":     $yellow,
+  "green":      $green,
+  "teal":       $teal,
+  "cyan":       $cyan,
+  "white":      $white,
+  "gray":       $gray-600,
+  "gray-dark":  $gray-800
+);
+
+$theme-colors: (
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $light,
+  "dark":       $dark
+);
+
+
+$font-family-base: azo-sans-web, sans-serif;
+// $font-size-root:              null !default;
+$font-size-base: 1rem;
 $line-height-base: 1.5;
-$link-color: $primary;
+// $link-color: $primary;
 
-$body-bg: $light;
-$body-color: $primary;
+$body-bg: $gray-500;
+$body-color: $black;
 
-.cls-1{fill: red;}
-.cls-2{fill: $white; }
-.cls-3{fill: $white; }
-.cls-4{fill: $white; }
-.cls-5{fill: $white; }
+$link-color:                              $primary;
+$link-decoration:                         underline !default;
+$link-shade-percentage:                   20% !default;
+$link-hover-color:                        shift-color($link-color, $link-shade-percentage);
+$link-hover-decoration:                   null !default;
 
-// Bootstrap and its default variables
+$component-active-color:      $white !default;
+$component-active-bg:         $primary;
+
+$pagination-color:                  $link-color;
+$pagination-bg:                     $gray-100;
+$pagination-border-width:           $border-width !default;
+$pagination-border-radius:          $border-radius !default;
+$pagination-margin-start:           -$pagination-border-width !default;
+$pagination-border-color:           $gray-600;
+
+$pagination-focus-color:            $link-hover-color;
+$pagination-focus-bg:               $gray-200;
+$pagination-focus-box-shadow:       $input-btn-focus-box-shadow;
+$pagination-focus-outline:          0 !default;
+
+$pagination-hover-color:            $link-hover-color;
+$pagination-hover-bg:               $gray-100;
+$pagination-hover-border-color:     $primary;
+
+$pagination-active-color:           $component-active-color;
+$pagination-active-bg:              $component-active-bg;
+$pagination-active-border-color:    $pagination-active-bg;
+
+$pagination-disabled-color:         $gray-600;
+$pagination-disabled-bg:            $white;
+$pagination-disabled-border-color:  $gray-600;
+
+@import "../node_modules/bootstrap/scss/root";
+@import "../node_modules/bootstrap/scss/reboot"; // Required
+@import "../node_modules/bootstrap/scss/type";
+@import "../node_modules/bootstrap/scss/images";
+// @import "bootstrap/scss/code";
+@import "../node_modules/bootstrap/scss/containers";
+@import "../node_modules/bootstrap/scss/grid";
+// @import "bootstrap/scss/tables";
+@import "../node_modules/bootstrap/scss/forms";
+@import "../node_modules/bootstrap/scss/buttons";
+@import "../node_modules/bootstrap/scss/transitions";
+@import "../node_modules/bootstrap/scss/dropdown";
+// @import "bootstrap/scss/button-group";
+// @import "bootstrap/scss/input-group"; // Requires forms
+@import "../node_modules/bootstrap/scss/helpers";
+@import "../node_modules/bootstrap/scss/nav";
+@import "../node_modules/bootstrap/scss/navbar"; // Requires nav
+// @import "bootstrap/scss/card";
+// @import "bootstrap/scss/breadcrumb";
+@import "../node_modules/bootstrap/scss/pagination";
+// @import "bootstrap/scss/badge";
+// @import "bootstrap/scss/jumbotron";
+// @import "bootstrap/scss/alert";
+// @import "bootstrap/scss/progress";
+// @import "../node_modules/bootstrap/scss/media";
+// @import "bootstrap/scss/list-group";
+// @import "../node_modules/bootstrap/scss/close";
+// @import "bootstrap/scss/toasts";
+// @import "../node_modules/bootstrap/scss/modal"; // Requires transitions
+// @import "bootstrap/scss/tooltip";
+// @import "bootstrap/scss/popover";
+// @import "bootstrap/scss/carousel";
+@import "../node_modules/bootstrap/scss/spinners";
+@import "../node_modules/bootstrap/scss/bootstrap-utilities";
+// @import "bootstrap/scss/print";
+
+// Add custom code after this
 
 
-.bg-white {
-  background-color: rgba(255, 255, 255, .8) !important;
-}
-.page-link {
-  background-color: rgba(255, 255, 255, .6) !important;
-}
+// .cls-1{fill: red;}
+// .cls-2{fill: $white; }
+// .cls-3{fill: $white; }
+// .cls-4{fill: $white; }
+// .cls-5{fill: $white; }
+
+
+// // .bg-white {
+// //   background-color: rgba(255, 255, 255, .8) !important;
+// // }
+// // .page-link {
+// //   background-color: rgba(255, 255, 255, .6) !important;
+// // }
 
 .text-small {
     font-size: .875rem;
@@ -90,11 +176,11 @@ $body-color: $primary;
   text-transform: uppercase;
 }
 
-.text-white-50 { color: rgba(255, 255, 255, .5); }
+// .text-white-50 { color: rgba(255, 255, 255, .5); }
 
-.bg-purple { background-color: var(--purple); }
+// .bg-purple { background-color: var(--purple); }
 
-// .border-bottom { border-bottom: 1px solid #e5e5e5; }
+.border-bottom { border-bottom: 1px solid $info !important; }
 
 .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .06); }
 
@@ -107,6 +193,15 @@ $body-color: $primary;
 //   background: linear-gradient(180deg, #F83E63 52.34%, rgba(255, 255, 255, 0) 100%) no-repeat;
 // }
 
-body {
-  background-image: url('images/noisy-texture-100x100-o5-d15-c-ffe5db-t1.png');
+// body {
+//   background-image: url('images/noisy-texture-100x100-o5-d15-c-ffe5db-t1.png');
+// }
+
+.page-link > .MuiSvgIcon-root {
+  font-size: 1.25rem !important;
+}
+
+.nav-link {
+  font-weight: 500;
+  font-size: 1.25rem;
 }

@@ -128,7 +128,7 @@ function MealForm(props) {
   );
 
   return (
-    <div>
+    <div className="p-3 bg-white rounded box-shadow text-dark">
       <Form
         onSubmit={onSubmit}
         validate={validate}
@@ -193,7 +193,7 @@ function MealForm(props) {
               <div className="buttons col-sm col-lg-6 col-xl-1">
                 <button
                   type="submit"
-                  className="btn btn-dark text-nowrap overflow-hidden w-100"
+                  className="btn btn-primary text-light text-nowrap overflow-hidden w-100"
                   disabled={submitting || invalid}>
                   {submitting && (
                     <div className="d-flex align-items-center justify-content-center">

@@ -10,7 +10,7 @@ import { Route, Router, Switch } from 'react-router-dom';
 import Footer from './components/Footer';
 // import Home from './components/Home';
 import Loading from './components/Loading';
-import Logo from './components/Logo';
+// import Logo from './components/Logo';
 import NavBar from './components/NavBar';
 import history from './utils/history';
 import ExternalApi from './views/ExternalApi';
@@ -40,7 +40,7 @@ function App() {
           <Route path="/external-api" component={ExternalApi} />
         </Switch>
         <Footer />
-        <Logo />
+        {/* <Logo /> */}
         <CookieConsent
           disableButtonStyles="true"
           buttonClasses="btn btn-light btn-outline-dark m-3"

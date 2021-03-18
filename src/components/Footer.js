@@ -33,6 +33,19 @@ function Footer() {
           <Link to="#">Användarvillkor</Link>
         </li>
       </ul>
+      <a
+        href="https://iconscout.com/illustrations/cooking-food"
+        target="_blank"
+        rel="noreferrer">
+        Cooking food Illustration
+      </a>{' '}
+      by{' '}
+      <a
+        href="https://iconscout.com/contributors/tribhuvansuthar"
+        target="_blank"
+        rel="noreferrer">
+        Tribhuvan Suthar
+      </a>
     </footer>
   );
 }
