@@ -1,4 +1,4 @@
-import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
+import { useAuth0 } from '@auth0/auth0-react';
 import {
   FirstPageRounded,
   LastPageRounded,
@@ -9,10 +9,11 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Dashbar from '../components/Dashbar';
-import Loading from '../components/Loading';
+// import Loading from '../components/Loading';
 import MealForm from '../components/MealForm';
 import MealsList from '../components/MealsList';
-function MealsComponent() {
+
+function Meals() {
   const apiOrigin = 'http://localhost:8080/api';
   // const [meals, setMeals] = useState([]);
 
@@ -189,66 +190,6 @@ function MealsComponent() {
       {/* <Footer /> */}
     </Fragment>
   );
-
-  //   return (
-  //   <div className="container bg-light text-dark">
-  //     <button color="primary" className="mt-5" onClick={callApi}>
-  //       Ping API
-  //     </button>
-  //     <div className="result-block-container">
-  //       {state.showResult && (
-  //         <div className="result-block" data-testid="api-result">
-  //           <h6 className="muted">Result</h6>
-  //           <pre>{JSON.stringify(state.apiMessage, null, 2)}</pre>
-  //         </div>
-  //       )}
-  //     </div>
-  //   </div>
-  // );
 }
 
-export default withAuthenticationRequired(MealsComponent, {
-  // eslint-disable-next-line react/display-name
-  onRedirecting: () => <Loading />
-});
-
-// import React, { useEffect, useState } from 'react';
-// import { useAuth0 } from '@auth0/auth0-react';
-
-// const Posts = () => {
-//   const { getAccessTokenSilently } = useAuth0();
-//   const [posts, setPosts] = useState(null);
-
-//   useEffect(() => {
-//     (async () => {
-//       try {
-//         const token = await getAccessTokenSilently({
-//           audience: 'https://api.example.com/',
-//           scope: 'read:posts',
-//         });
-//         const response = await fetch('https://api.example.com/posts', {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         });
-//         setPosts(await response.json());
-//       } catch (e) {
-//         console.error(e);
-//       }
-//     })();
-//   }, [getAccessTokenSilently]);
-
-//   if (!posts) {
-//     return <div>Loading...</div>;
-//   }
-
-//   return (
-//     <ul>
-//       {posts.map((post, index) => {
-//         return <li key={index}>{post}</li>;
-//       })}
-//     </ul>
-//   );
-// };
-
-// export default Posts;
+export default Meals;

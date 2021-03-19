@@ -1,9 +1,9 @@
-import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
+import { useAuth0 } from '@auth0/auth0-react';
 import React, { useState } from 'react';
 
-import Loading from '../components/Loading';
+// import Loading from '../components/Loading';
 
-export const ExternalApiComponent = () => {
+const ExternalApi = () => {
   const apiOrigin = 'http://localhost:8080';
 
   const [state, setState] = useState({
@@ -138,7 +138,4 @@ export const ExternalApiComponent = () => {
   );
 };
 
-export default withAuthenticationRequired(ExternalApiComponent, {
-  // eslint-disable-next-line react/display-name
-  onRedirecting: () => <Loading />
-});
+export default ExternalApi;

@@ -7,6 +7,7 @@ import React from 'react';
 import CookieConsent from 'react-cookie-consent';
 import { Route, Router, Switch } from 'react-router-dom';
 
+import ProtectedRoute from './auth/protected-route';
 import Footer from './components/Footer';
 // import Home from './components/Home';
 import Loading from './components/Loading';
@@ -35,9 +36,9 @@ function App() {
         <NavBar />
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/profile" component={Profile} />
-          <Route path="/meals" component={Meals} />
-          <Route path="/external-api" component={ExternalApi} />
+          <ProtectedRoute path="/profile" component={Profile} />
+          <ProtectedRoute path="/meals" component={Meals} />
+          <ProtectedRoute path="/external-api" component={ExternalApi} />
         </Switch>
         <Footer />
         {/* <Logo /> */}

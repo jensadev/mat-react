@@ -1,9 +1,9 @@
-import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
+import { useAuth0 } from '@auth0/auth0-react';
 import React from 'react';
 
-import Loading from '../components/Loading';
+// import Loading from '../components/Loading';
 
-function ProfileComponent() {
+function Profile() {
   const { user } = useAuth0();
 
   return (
@@ -20,7 +20,4 @@ function ProfileComponent() {
   );
 }
 
-export default withAuthenticationRequired(ProfileComponent, {
-  // eslint-disable-next-line react/display-name
-  onRedirecting: () => <Loading />
-});
+export default Profile;
