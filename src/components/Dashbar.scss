@@ -14,7 +14,7 @@
   padding-bottom: 1rem;
   margin-top: -1px;
   overflow-x: auto;
-  color: rgba(255, 255, 255, .75);
+  // color: rgba(255, 255, 255, .75);
   text-align: center;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
@@ -24,14 +24,15 @@
   padding-top: .75rem;
   padding-bottom: .75rem;
   font-size: .875rem;
-  color: var(--secondary);
+  font-weight: 300;
+  color: var(--bs-secondary);
 }
 
 .nav-underline .nav-link:hover {
-  color: var(--blue);
+  color: var(--bs-gray-dark);
 }
 
 .nav-underline .active {
   font-weight: 500;
-  color: var(--gray-dark);
+  color: var(--bs-gray-dark);
 }

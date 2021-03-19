@@ -18,7 +18,7 @@ function NavBar() {
     });
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-primary bg-light box-shadow">
+    <nav className="navbar navbar-expand-lg navbar-primary bg-nav box-shadow">
       <div className="container-fluid">
         <Link className="navbar-brand" to={'/'}>
           Brand

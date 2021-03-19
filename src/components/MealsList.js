@@ -46,18 +46,8 @@ function ListItem(props) {
 
         const responseData = await response.json();
         console.log(responseData);
-        // props.parentCallback(responseData);
-        // setState({
-        //   ...state,
-        //   showResult: responseData == false ? false : true,
-        //   apiMessage: responseData
-        // });
       } catch (error) {
         console.error(error);
-        // setState({
-        //   ...state,
-        //   error: error.error
-        // });
       }
     }
   };

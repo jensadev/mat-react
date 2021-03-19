@@ -32,14 +32,6 @@ function Meals() {
     (async () => {
       const params = new URLSearchParams(location.search);
       const page = parseInt(params.get('page')) || 1;
-      // if (page !== this.state.pager.currentPage) {
-      //   fetch(`/api/items?page=${page}`, { method: 'GET' })
-      //     .then((response) => response.json())
-      //     .then(({ pager, pageOfItems }) => {
-      //       this.setState({ pager, pageOfItems });
-      //     });
-      // }
-      // console.log(pager.currentPage);
       try {
         const token = await getAccessTokenSilently();
         if (page !== pager.currentPage) {
@@ -52,17 +44,14 @@ function Meals() {
             }
           );
 
-          const responseData = await response.json();
-
-          // console.table(responseData);
-
-          if (responseData.pager != 'undefined') {
+          if (response.status == 200) {
+            const responseData = response.json();
             setPager(responseData.pager);
             setPageOfItems(responseData.pageOfItems);
           }
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -79,64 +68,66 @@ function Meals() {
           <h6 className="border-bottom border-gray pb-2 mb-0">
             Senaste måltider
           </h6>
-          <MealsList meals={pageOfItems} />
-          <nav className="pt-3">
-            {pager.pages && pager.pages.length && (
-              <ul className="pagination justify-content-center">
-                <li
-                  className={`page-item first-item ${
-                    pager.currentPage === 1 ? 'disabled' : ''
-                  }`}>
-                  <Link to={{ search: `?page=1` }} className="page-link">
-                    <FirstPageRounded />
-                  </Link>
-                </li>
-                <li
-                  className={`page-item previous-item ${
-                    pager.currentPage === 1 ? 'disabled' : ''
-                  }`}>
-                  <Link
-                    to={{ search: `?page=${pager.currentPage - 1}` }}
-                    className="page-link">
-                    <NavigateBeforeRounded />
-                  </Link>
-                </li>
-                {pager.pages.map((page) => (
+          <Fragment>
+            <MealsList meals={pageOfItems} />
+            <nav className="pt-3">
+              {pager.pages && pager.pages.length && (
+                <ul className="pagination justify-content-center">
                   <li
-                    key={page}
-                    className={`page-item number-item ${
-                      pager.currentPage === page ? 'active' : ''
+                    className={`page-item first-item ${
+                      pager.currentPage === 1 ? 'disabled' : ''
                     }`}>
-                    <Link
-                      to={{ search: `?page=${page}` }}
-                      className="page-link">
-                      {page}
+                    <Link to={{ search: `?page=1` }} className="page-link">
+                      <FirstPageRounded />
                     </Link>
                   </li>
-                ))}
-                <li
-                  className={`page-item next-item ${
-                    pager.currentPage === pager.totalPages ? 'disabled' : ''
-                  }`}>
-                  <Link
-                    to={{ search: `?page=${pager.currentPage + 1}` }}
-                    className="page-link">
-                    <NavigateNextRounded />
-                  </Link>
-                </li>
-                <li
-                  className={`page-item last-item ${
-                    pager.currentPage === pager.totalPages ? 'disabled' : ''
-                  }`}>
-                  <Link
-                    to={{ search: `?page=${pager.totalPages}` }}
-                    className="page-link">
-                    <LastPageRounded />
-                  </Link>
-                </li>
-              </ul>
-            )}
-          </nav>
+                  <li
+                    className={`page-item previous-item ${
+                      pager.currentPage === 1 ? 'disabled' : ''
+                    }`}>
+                    <Link
+                      to={{ search: `?page=${pager.currentPage - 1}` }}
+                      className="page-link">
+                      <NavigateBeforeRounded />
+                    </Link>
+                  </li>
+                  {pager.pages.map((page) => (
+                    <li
+                      key={page}
+                      className={`page-item number-item ${
+                        pager.currentPage === page ? 'active' : ''
+                      }`}>
+                      <Link
+                        to={{ search: `?page=${page}` }}
+                        className="page-link">
+                        {page}
+                      </Link>
+                    </li>
+                  ))}
+                  <li
+                    className={`page-item next-item ${
+                      pager.currentPage === pager.totalPages ? 'disabled' : ''
+                    }`}>
+                    <Link
+                      to={{ search: `?page=${pager.currentPage + 1}` }}
+                      className="page-link">
+                      <NavigateNextRounded />
+                    </Link>
+                  </li>
+                  <li
+                    className={`page-item last-item ${
+                      pager.currentPage === pager.totalPages ? 'disabled' : ''
+                    }`}>
+                    <Link
+                      to={{ search: `?page=${pager.totalPages}` }}
+                      className="page-link">
+                      <LastPageRounded />
+                    </Link>
+                  </li>
+                </ul>
+              )}
+            </nav>
+          </Fragment>
         </div>
         <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
           <h6 className="border-bottom border-gray pb-2 mb-0">Förslag</h6>
