@@ -17,6 +17,12 @@ function Meals() {
   const apiOrigin = 'http://localhost:8080/api';
   // const [meals, setMeals] = useState([]);
 
+  // const [state, setState] = useState({
+  //   showResult: false,
+  //   apiMessage: '',
+  //   error: null
+  // });
+
   const [pager, setPager] = useState({});
   const [pageOfItems, setPageOfItems] = useState([]);
   // const [test, setTest] = useState(false);

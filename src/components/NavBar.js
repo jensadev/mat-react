@@ -12,10 +12,12 @@ function NavBar() {
   // const handleProfileCollapse = () =>
   //   setIsProfileCollapsed(!isProfileCollapsed);
 
-  const logoutWithRedirect = () =>
+  const logoutWithRedirect = () => {
+    localStorage.clear('uid');
     logout({
       returnTo: window.location.origin
     });
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-primary bg-nav box-shadow">
