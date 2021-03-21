@@ -52,6 +52,7 @@ function Meals() {
 
           if (response.status == 200) {
             const responseData = await response.json();
+
             setPager(responseData.pager);
             setPageOfItems(responseData.pageOfItems);
           }
@@ -66,7 +67,7 @@ function Meals() {
   return (
     <Fragment>
       <Dashbar />
-      <main className="h-100 d-flex flex-column container mt-3">
+      <main className="d-flex flex-column container mt-3">
         <div className="my-3">
           <MealForm parentCallback={handleCallback} />
         </div>

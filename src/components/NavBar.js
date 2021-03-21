@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useAuth0 } from '@auth0/auth0-react';
+import { MenuOpenRounded, MenuRounded } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
@@ -20,7 +21,7 @@ function NavBar() {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-primary bg-nav box-shadow">
+    <nav className="navbar navbar-expand-lg navbar-primary bg-nav box-shadow text-uppercase">
       <div className="container-fluid">
         <Link className="navbar-brand" to={'/'}>
           Brand
@@ -34,7 +35,11 @@ function NavBar() {
           aria-expanded={!isNavCollapsed ? true : false}
           aria-label="Toggle navigation"
           onClick={handleNavCollapse}>
-          <span className="navbar-toggler-icon"></span>
+          {!isNavCollapsed ? (
+            <MenuOpenRounded className="navbar-toggler-icon" />
+          ) : (
+            <MenuRounded className="navbar-toggler-icon" />
+          )}
         </button>
         <div
           className={`${isNavCollapsed ? 'collapse' : ''} navbar-collapse`}
@@ -76,7 +81,8 @@ function NavBar() {
                     src={user.picture}
                     alt="Profile"
                     className="nav-user-profile rounded-circle"
-                    width="32"
+                    width="24"
+                    height="24"
                   />
                 </a>
                 <ul

@@ -14,7 +14,6 @@ import Loading from './components/Loading';
 // import Logo from './components/Logo';
 import NavBar from './components/NavBar';
 import history from './utils/history';
-import ExternalApi from './views/ExternalApi';
 import Home from './views/Home';
 import Meals from './views/Meals';
 import Profile from './views/Profile';
@@ -38,7 +37,6 @@ function App() {
           <Route path="/" exact component={Home} />
           <ProtectedRoute path="/profile" component={Profile} />
           <ProtectedRoute path="/meals" component={Meals} />
-          <ProtectedRoute path="/external-api" component={ExternalApi} />
         </Switch>
         <Footer />
         {/* <Logo /> */}

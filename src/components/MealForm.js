@@ -46,26 +46,17 @@ function MealForm(props) {
       const responseData = await response.json();
 
       props.parentCallback(responseData);
-      // setState({
-      //   ...state,
-      //   showResult: responseData == false ? false : true,
-      //   apiMessage: responseData
-      // });
     } catch (error) {
       console.error(error);
-      // setState({
-      //   ...state,
-      //   error: error.error
-      // });
     }
   };
 
   const validate = (values) => {
     const errors = {};
-    if (!values.type_id) {
-      errors.type_id = 'Required';
-    } else if (isNaN(values.type_id)) {
-      errors.type_id = 'Must be a number';
+    if (!values.type) {
+      errors.type = 'Required';
+    } else if (isNaN(values.type)) {
+      errors.type = 'Must be a number';
     }
     if (values.date == null || !values.date) {
       errors.date = 'Required';
@@ -93,8 +84,18 @@ function MealForm(props) {
       <Form
         onSubmit={onSubmit}
         validate={validate}
-        render={({ handleSubmit, form, invalid, submitting, values }) => (
-          <form onSubmit={handleSubmit}>
+        render={({
+          handleSubmit,
+          form,
+          invalid,
+          submitting,
+          values,
+          reset
+        }) => (
+          <form
+            onSubmit={(event) => {
+              handleSubmit(event).then(reset);
+            }}>
             <div className="row gy-2 gx-3 align-items-center justify-content-md-between h6">
               <div className="col-sm-3 col-lg-2 col-xl-auto text-nowrap text-capitalize-first">
                 {values.date && format(values.date, 'eeee', { locale: sv })} den
@@ -135,12 +136,12 @@ function MealForm(props) {
               </div>
               <div className="col-sm-3 col-lg-2 col-xl-auto">till </div>
               <div className="col-sm-9 col-lg-2 col-xl-auto">
-                <label htmlFor="type_id" className="form-label visually-hidden">
+                <label htmlFor="type" className="form-label visually-hidden">
                   typ av mål
                 </label>
                 <Field
-                  id="type_id"
-                  name="type_id"
+                  id="type"
+                  name="type"
                   component="select"
                   defaultValue="3"
                   className="form-select text-dark w-100">
@@ -170,16 +171,8 @@ function MealForm(props) {
                     <span style={{ fontWeight: 500 }}>Skapa</span>
                   )}
                 </button>
-                {/* <button
-                className="btn btn-dark w-100 text-nowrap overflow-hidden"
-                type="button"
-                onClick={form.reset}
-                disabled={submitting || pristine}>
-                Reset
-              </button> */}
               </div>
             </div>
-            {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
           </form>
         )}
       />

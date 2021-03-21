@@ -52,7 +52,7 @@ function ListItem(props) {
     }
   };
 
-  console.table(props);
+  // console.table(props);
 
   const meal = props.meal;
   return (

@@ -7,7 +7,7 @@ function Profile() {
   const { user } = useAuth0();
 
   return (
-    <div className="container bg-light text-dark">
+    <main className="d-flex flex-column container mt-3">
       <img
         src={user.picture}
         alt="Profile"
@@ -16,7 +16,7 @@ function Profile() {
       <h2>{user.name}</h2>
       <p className="lead text-muted">{user.email}</p>
       <pre>{JSON.stringify(user, null, 2)}</pre>
-    </div>
+    </main>
   );
 }
 

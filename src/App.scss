@@ -70,7 +70,8 @@ $theme-colors: (
 );
 
 
-$font-family-base: azo-sans-web, sans-serif;
+// $font-family-base: azo-sans-web, sans-serif;
+$font-family-base: duper, sans-serif; 
 // $font-size-root:              null !default;
 $font-size-base: 1rem;
 $line-height-base: 1.5;
@@ -200,7 +201,21 @@ $pagination-disabled-border-color:  $gray-600;
   font-size: 1.25rem !important;
 }
 
+// .navbar {
+//   min-height: 4rem;
+// }
+
 .nav-link {
-  font-weight: 500;
   font-size: 1.25rem;
+}
+
+.navbar-toggler {
+  color: $primary;
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.btn-outline-danger:hover {
+  color: $white;
 }
