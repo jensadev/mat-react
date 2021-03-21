@@ -1,33 +1,84 @@
 import './DownshiftInput.scss';
 
+import { useAuth0 } from '@auth0/auth0-react';
 import Downshift from 'downshift';
 import { matchSorter } from 'match-sorter';
 import React from 'react';
-
+import { useEffect, useState } from 'react';
 const itemToString = (item) => (item ? item : '');
 
 // eslint-disable-next-line no-unused-vars
-const DownshiftInput = ({ input, meta, placeholder, items, ...rest }) => (
-  <Downshift
-    {...input}
-    onInputValueChange={(inputValue) => {
-      input.onChange(inputValue);
-    }}
-    itemToString={itemToString}
-    selectedItem={input.value}>
-    {({
-      getInputProps,
-      getItemProps,
-      isOpen,
-      inputValue,
-      highlightedIndex,
-      selectedItem
-    }) => {
-      const filteredItems = matchSorter(items, inputValue, {
+function DownshiftInput({ input, meta, placeholder, items, ...rest }) {
+  const [dishes, setDishes] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
+  const apiOrigin = 'http://localhost:8080/api';
+  // const [state, setState] = useState({
+  //   showResult: false,
+  //   apiMessage: '',
+  //   error: null
+  // });
+
+  const { getAccessTokenSilently } = useAuth0();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const token = await getAccessTokenSilently();
+
+        const response = await fetch(`${apiOrigin}/users/dishes`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        const responseData = await response.json();
+
+        // console.table(responseData);
+        if (responseData) {
+          setDishes(responseData.dishes);
+        }
+        // setState({
+        //   ...state,
+        //   showResult: responseData == false ? false : true,
+        //   apiMessage: responseData
+        // });
+      } catch (error) {
+        console.log(error);
+        // setState({
+        //   ...state,
+        //   error: error.error
+        // });
+      }
+    })();
+  }, [getAccessTokenSilently]);
+
+  const filterItems = (inputValue) => {
+    // console.log(dishes);
+    setFilteredItems(
+      matchSorter(dishes, inputValue, {
         keys: ['name'],
         maxRanking: matchSorter.rankings.STARTS_WITH
-      });
-      return (
+      })
+    );
+  };
+
+  return (
+    <Downshift
+      {...input}
+      onInputValueChange={(inputValue) => {
+        filterItems(inputValue);
+        input.onChange(inputValue);
+      }}
+      itemToString={itemToString}
+      selectedItem={input.value}>
+      {({
+        getInputProps,
+        getItemProps,
+        isOpen,
+
+        highlightedIndex,
+        selectedItem
+      }) => (
         <div className="downshift text-dark">
           <input
             className="form-control text-dark w-100"
@@ -60,9 +111,9 @@ const DownshiftInput = ({ input, meta, placeholder, items, ...rest }) => (
             </div>
           )}
         </div>
-      );
-    }}
-  </Downshift>
-);
+      )}
+    </Downshift>
+  );
+}
 
 export default DownshiftInput;

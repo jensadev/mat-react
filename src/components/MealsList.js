@@ -52,6 +52,8 @@ function ListItem(props) {
     }
   };
 
+  console.table(props);
+
   const meal = props.meal;
   return (
     <div className="d-flex justify-content-between pt-3 text-dark border-bottom">
@@ -60,7 +62,7 @@ function ListItem(props) {
 
         <p className="pb-3 mb-0 lh-sm text-dark">
           <Date classes={'d-block small text-muted'} dateString={meal.date} />
-          {meal.dish}
+          {meal.Dish.name}
         </p>
       </div>
       <div>

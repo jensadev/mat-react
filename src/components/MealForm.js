@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useAuth0 } from '@auth0/auth0-react';
 import { format } from 'date-fns';
 import sv from 'date-fns/locale/sv';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 registerLocale('sv', sv);
 
@@ -15,46 +15,7 @@ import DownshiftInput from './DownshiftInput';
 function MealForm(props) {
   const [today] = useState(new Date());
   const apiOrigin = 'http://localhost:8080/api';
-  const [dishes, setDishes] = useState([]);
-  // const [state, setState] = useState({
-  //   showResult: false,
-  //   apiMessage: '',
-  //   error: null
-  // });
-
   const { getAccessTokenSilently } = useAuth0();
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const token = await getAccessTokenSilently();
-
-        const response = await fetch(`${apiOrigin}/users/dishes`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-
-        const responseData = await response.json();
-
-        // console.table(responseData);
-        if (responseData) {
-          setDishes(responseData);
-        }
-        // setState({
-        //   ...state,
-        //   showResult: responseData == false ? false : true,
-        //   apiMessage: responseData
-        // });
-      } catch (error) {
-        console.log(error);
-        // setState({
-        //   ...state,
-        //   error: error.error
-        // });
-      }
-    })();
-  }, [getAccessTokenSilently]);
 
   const DatePickerAdapter = ({ input: { onChange, value }, ...rest }) => (
     <DatePicker
@@ -166,7 +127,7 @@ function MealForm(props) {
                   className="form-control text-dark w-100"
                   id="dish"
                   name="dish"
-                  items={dishes ? dishes : []}
+                  // items={dishes ? dishes : []}
                   component={DownshiftInput}
                   placeholder="Skriv för att söka eller lägga till en rätt..."
                 />

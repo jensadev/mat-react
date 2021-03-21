@@ -51,7 +51,7 @@ function Meals() {
           );
 
           if (response.status == 200) {
-            const responseData = response.json();
+            const responseData = await response.json();
             setPager(responseData.pager);
             setPageOfItems(responseData.pageOfItems);
           }
