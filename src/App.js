@@ -8,11 +8,13 @@ import CookieConsent from 'react-cookie-consent';
 import { Route, Router, Switch } from 'react-router-dom';
 
 import ProtectedRoute from './auth/protected-route';
+import Flash from './components/Flash';
 import Footer from './components/Footer';
 // import Home from './components/Home';
 import Loading from './components/Loading';
 // import Logo from './components/Logo';
 import NavBar from './components/NavBar';
+import Bus from './utils/bus';
 import history from './utils/history';
 import Home from './views/Home';
 import Meals from './views/Meals';
@@ -29,6 +31,9 @@ function App() {
     return <Loading />;
   }
 
+  window.flash = (message, type = 'success') =>
+    Bus.emit('flash', { message, type });
+
   return (
     <Router history={history}>
       <div id="app" className="d-flex flex-column h-100">
@@ -39,6 +44,9 @@ function App() {
           <ProtectedRoute path="/meals" component={Meals} />
         </Switch>
         <Footer />
+        <div className="position-absolute bottom-0 end-0 m-4">
+          <Flash />
+        </div>
         {/* <Logo /> */}
         <CookieConsent
           disableButtonStyles="true"

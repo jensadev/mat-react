@@ -35,7 +35,7 @@ $grays: (
 
 $primary:      #BD4F3E;// rgb(201, 83, 66);   // #ed3c21;
 $secondary:     #51c0b4;
-$success:     #A7D984; //  rgb(150,204,125);
+$success:    #5FC48A; // #A7D984; //  rgb(150,204,125);
 $info:       #AFE2E3; //   rgb(175,227,227);
 $warning:     #FFE586; //  rgb(255,228,134);
 $danger:        rgb(212,106, 80);
@@ -135,14 +135,14 @@ $pagination-disabled-border-color:  $gray-600;
 @import "../node_modules/bootstrap/scss/pagination";
 @import "../node_modules/bootstrap/scss/badge";
 // @import "bootstrap/scss/jumbotron";
-// @import "bootstrap/scss/alert";
+@import "../node_modules/bootstrap/scss/alert";
 // @import "bootstrap/scss/progress";
 // @import "../node_modules/bootstrap/scss/media";
 // @import "bootstrap/scss/list-group";
-// @import "../node_modules/bootstrap/scss/close";
+@import "../node_modules/bootstrap/scss/close";
 // @import "bootstrap/scss/toasts";
 // @import "../node_modules/bootstrap/scss/modal"; // Requires transitions
-// @import "bootstrap/scss/tooltip";
+@import "../node_modules/bootstrap/scss/tooltip";
 // @import "bootstrap/scss/popover";
 // @import "bootstrap/scss/carousel";
 @import "../node_modules/bootstrap/scss/spinners";
@@ -219,3 +219,8 @@ $pagination-disabled-border-color:  $gray-600;
 .btn-outline-danger:hover {
   color: $white;
 }
+
+// .btn-close {
+//   padding: 1rem 1.25rem !important;
+//   background: transparent;
+// }

@@ -31,7 +31,6 @@ function ListItem(props) {
   const { getAccessTokenSilently } = useAuth0();
 
   const onSubmit = async (values) => {
-    window.alert(JSON.stringify(values, 0, 2));
     if (values.action == 'delete') {
       try {
         const token = await getAccessTokenSilently();
@@ -46,8 +45,10 @@ function ListItem(props) {
 
         const responseData = await response.json();
         console.log(responseData);
+        window.flash(responseData, 'success');
       } catch (error) {
         console.error(error);
+        window.flash('Någonting gick fel: ' + error, 'danger');
       }
     }
   };

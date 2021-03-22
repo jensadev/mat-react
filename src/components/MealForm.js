@@ -7,11 +7,9 @@ import sv from 'date-fns/locale/sv';
 import { useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 registerLocale('sv', sv);
-
 import { Field, Form } from 'react-final-form';
 
 import DownshiftInput from './DownshiftInput';
-
 function MealForm(props) {
   const [today] = useState(new Date());
   const apiOrigin = 'http://localhost:8080/api';
@@ -28,9 +26,6 @@ function MealForm(props) {
   // const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const onSubmit = async (values) => {
-    // await sleep(1000);
-    window.alert(JSON.stringify(values, 0, 2));
-
     try {
       const token = await getAccessTokenSilently();
 
@@ -44,25 +39,28 @@ function MealForm(props) {
       });
 
       const responseData = await response.json();
-
+      window.flash(JSON.stringify(responseData.meal, 0, 2), 'success');
       props.parentCallback(responseData);
     } catch (error) {
       console.error(error);
+      window.flash('Någonting gick fel: ' + error, 'danger');
     }
   };
 
   const validate = (values) => {
     const errors = {};
     if (!values.type) {
-      errors.type = 'Required';
+      errors.type = 'Fältet för måltidstyp får inte vara tomt.';
     } else if (isNaN(values.type)) {
-      errors.type = 'Must be a number';
+      errors.type = 'Värdet är felaktigt.';
     }
     if (values.date == null || !values.date) {
-      errors.date = 'Required';
+      errors.date = 'Fältet för datum får inte vara tomt.';
     }
     if (!values.dish) {
-      errors.dish = 'Required';
+      errors.dish = 'Fältet för rätt får inte vara tomt.';
+    } else if (String(values.dish).length < 4) {
+      errors.dish = 'Värdet måste vara minst fyra tecken.';
     }
     return errors;
   };
@@ -73,7 +71,9 @@ function MealForm(props) {
       subscribe={{ touched: true, error: true }}
       render={({ meta: { touched, error } }) =>
         touched && error ? (
-          <div className="invalid-feedback">{error}</div>
+          <div className="invalid-tooltip" style={{ display: 'block' }}>
+            {error}
+          </div>
         ) : null
       }
     />
@@ -82,25 +82,24 @@ function MealForm(props) {
   return (
     <div className="p-3 bg-white rounded box-shadow text-dark">
       <Form
+        initialValues={{ date: today, type: 3 }}
         onSubmit={onSubmit}
         validate={validate}
-        render={({
-          handleSubmit,
-          form,
-          invalid,
-          submitting,
-          values,
-          reset
-        }) => (
+        render={({ handleSubmit, form, invalid, submitting, values }) => (
           <form
-            onSubmit={(event) => {
-              handleSubmit(event).then(reset);
+            onSubmit={async (event) => {
+              await handleSubmit(event);
+              // console.log('Error not in resolved promise', error);
+              // if (error) {
+              //   return error;
+              // }
+              form.reset();
             }}>
             <div className="row gy-2 gx-3 align-items-center justify-content-md-between h6">
               <div className="col-sm-3 col-lg-2 col-xl-auto text-nowrap text-capitalize-first">
                 {values.date && format(values.date, 'eeee', { locale: sv })} den
               </div>
-              <div className="col-sm-9 col-lg-2 col-xl-2">
+              <div className="col-sm-9 col-lg-2 col-xl-2 position-relative">
                 <label htmlFor="date" className="form-label visually-hidden">
                   datum
                 </label>
@@ -120,7 +119,7 @@ function MealForm(props) {
                   ? 'ska jag äta'
                   : 'har jag ätit'}
               </div>
-              <div className="col-sm-9 col-lg-6 col-xl-4">
+              <div className="col-sm-9 col-lg-6 col-xl-4 position-relative">
                 <label htmlFor="dish" className="form-label visually-hidden">
                   rätt
                 </label>
@@ -135,9 +134,9 @@ function MealForm(props) {
                 <Error name="dish" />
               </div>
               <div className="col-sm-3 col-lg-2 col-xl-auto">till </div>
-              <div className="col-sm-9 col-lg-2 col-xl-auto">
+              <div className="col-sm-9 col-lg-2 col-xl-auto position-relative">
                 <label htmlFor="type" className="form-label visually-hidden">
-                  typ av mål
+                  måltidstyp
                 </label>
                 <Field
                   id="type"
@@ -155,7 +154,7 @@ function MealForm(props) {
               <div className="buttons col-sm col-lg-6 col-xl-1">
                 <button
                   type="submit"
-                  className="btn btn-primary text-light text-nowrap overflow-hidden w-100"
+                  className="btn btn-success text-light text-nowrap overflow-hidden w-100"
                   disabled={submitting || invalid}>
                   {submitting && (
                     <div className="d-flex align-items-center justify-content-center">
@@ -167,9 +166,7 @@ function MealForm(props) {
                       <span className="visually-hidden">Laddar...</span>
                     </div>
                   )}
-                  {!submitting && (
-                    <span style={{ fontWeight: 500 }}>Skapa</span>
-                  )}
+                  {!submitting && <span>Skapa</span>}
                 </button>
               </div>
             </div>
