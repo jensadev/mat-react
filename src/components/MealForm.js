@@ -14,6 +14,7 @@ function MealForm(props) {
   const [today] = useState(new Date());
   const apiOrigin = 'http://localhost:8080/api';
   const { getAccessTokenSilently } = useAuth0();
+  const [meal] = useState({ date: today, type: 3 });
 
   const DatePickerAdapter = ({ input: { onChange, value }, ...rest }) => (
     <DatePicker
@@ -24,6 +25,12 @@ function MealForm(props) {
   );
 
   // const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  // const handleCallback = (childData) => {
+  //   // setTest(childData);
+  //   console.log(childData);
+  //   setPager({});
+  // };
 
   const onSubmit = async (values) => {
     try {
@@ -82,7 +89,7 @@ function MealForm(props) {
   return (
     <div className="p-3 bg-white rounded box-shadow text-dark">
       <Form
-        initialValues={{ date: today, type: 3 }}
+        initialValues={meal}
         onSubmit={onSubmit}
         validate={validate}
         render={({ handleSubmit, form, invalid, submitting, values }) => (
