@@ -4,10 +4,11 @@ import React, { Fragment, useState } from 'react';
 import Dashbar from '../components/Dashbar';
 import Dashboard from '../components/Dashboard';
 // import Loading from '../components/Loading';
-// import Mform from '../components/Meals/Form';
+import Mform from '../components/Meals/Form';
 import Mlist from '../components/Meals/List';
 
 function M() {
+  const [reload, setReload] = useState(false);
   const [today] = useState(new Date());
   const [meal, setMeal] = useState({
     date: today,
@@ -15,6 +16,12 @@ function M() {
     dish: '',
     edit: false
   });
+
+  const handleCallback = (childData) => {
+    // setTest(childData);
+    console.log(childData);
+    setReload(childData);
+  };
 
   const handleMealChange = (e) => {
     setMeal(e);
@@ -26,9 +33,13 @@ function M() {
       <Dashbar />
       <main className="d-flex flex-column container mt-3">
         <div className="my-3">
-          {/* <Mform meal={meal} onMealChange={handleMealChange} /> */}
+          <Mform
+            meal={meal}
+            onMealChange={handleMealChange}
+            parentCallback={handleCallback}
+          />
         </div>
-        <Mlist meal={meal} onMealChange={handleMealChange} />
+        <Mlist meal={meal} onMealChange={handleMealChange} reload={reload} />
         <Dashboard />
       </main>
     </Fragment>

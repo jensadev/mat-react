@@ -10,6 +10,7 @@ import {
 import { useState } from 'react';
 import { Field, Form } from 'react-final-form';
 
+// import { Redirect } from 'react-router-dom';
 import Date from '../Date';
 
 function Listitem(props) {
@@ -32,26 +33,25 @@ function Listitem(props) {
         return 'tom';
     }
   };
+
   const { getAccessTokenSilently } = useAuth0();
   const onSubmit = async (values) => {
+    const apiOrigin = 'http://localhost:8080/api';
     if (values.action == 'delete') {
       try {
         const token = await getAccessTokenSilently();
 
-        const response = await fetch(
-          `${process.env.API_ORIGIN}/meals/${values.id}`,
-          {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`
-            }
+        const response = await fetch(`${apiOrigin}/meals/${values.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
           }
-        );
+        });
 
         const responseData = await response.json();
         console.log(responseData);
-        window.flash(responseData, 'success');
+        window.flash(responseData.message, 'success');
       } catch (error) {
         console.error(error);
         window.flash('Någonting gick fel: ' + error, 'danger');

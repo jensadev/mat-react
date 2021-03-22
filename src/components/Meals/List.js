@@ -48,7 +48,7 @@ function List(props) {
         console.error(error);
       }
     })();
-  }, [getAccessTokenSilently, location.search, pager]);
+  }, [getAccessTokenSilently, location.search, pager, props.reload]);
 
   return (
     <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
