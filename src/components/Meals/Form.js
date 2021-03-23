@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useAuth0 } from '@auth0/auth0-react';
 import { format } from 'date-fns';
 import sv from 'date-fns/locale/sv';
-import { useState } from 'react';
+// import { useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 registerLocale('sv', sv);
 import { Field, Form } from 'react-final-form';
@@ -13,7 +13,7 @@ import DownshiftInput from '../DownshiftInput';
 
 function Mform(props) {
   const apiOrigin = 'http://localhost:8080/api';
-  const [meal] = useState(props.meal);
+  // const [meal] = useState(props.meal);
   const { getAccessTokenSilently } = useAuth0();
   const DatePickerAdapter = ({ input: { onChange, value }, ...rest }) => (
     <DatePicker
@@ -22,12 +22,13 @@ function Mform(props) {
       {...rest}
     />
   );
+
   const onSubmit = async (values) => {
     try {
       const token = await getAccessTokenSilently();
 
       const response = await fetch(`${apiOrigin}/meals`, {
-        method: 'POST',
+        method: props.meal.id ? 'PATCH' : 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
@@ -36,8 +37,15 @@ function Mform(props) {
       });
 
       const responseData = await response.json();
-      window.flash(JSON.stringify(responseData.meal, 0, 2), 'success');
-      props.parentCallback(responseData);
+      if (responseData.meal) {
+        window.flash(`Måltiden skapad, ${responseData.meal.id}`, 'success');
+      } else if (responseData.updatedMeal) {
+        window.flash(
+          `Måltiden uppdaterad, ${responseData.updatedMeal.id}`,
+          'success'
+        );
+      }
+      props.onMealUpdateOrCreate(responseData.meal || responseData.updatedMeal);
     } catch (error) {
       console.error(error);
       window.flash('Någonting gick fel: ' + error, 'danger');
@@ -79,17 +87,20 @@ function Mform(props) {
   return (
     <div className="p-3 bg-white rounded box-shadow text-dark">
       <Form
-        initialValues={meal}
+        initialValues={props.meal}
         onSubmit={onSubmit}
         validate={validate}
-        render={({ handleSubmit, form, invalid, submitting, values }) => (
+        render={({
+          handleSubmit,
+          form,
+          invalid,
+          submitting,
+          values,
+          reset
+        }) => (
           <form
             onSubmit={async (event) => {
-              await handleSubmit(event);
-              // console.log('Error not in resolved promise', error);
-              // if (error) {
-              //   return error;
-              // }
+              await handleSubmit(event).then(() => reset);
               form.reset();
             }}>
             <div className="row gy-2 gx-3 align-items-center justify-content-md-between h6">
@@ -102,7 +113,7 @@ function Mform(props) {
                 </label>
                 <Field
                   className="form-control text-dark w-100"
-                  defaultValue={meal.today}
+                  defaultValue={props.meal.date}
                   id="date"
                   name="date"
                   locale={sv}
@@ -112,7 +123,7 @@ function Mform(props) {
                 <Error name="date" />
               </div>
               <div className="col-sm-3 col-lg-2 col-xl-auto text-nowrap">
-                {values.date && values.date > meal.today
+                {values.date && values.date > props.meal.date
                   ? 'ska jag äta'
                   : 'har jag ätit'}
               </div>
@@ -148,8 +159,9 @@ function Mform(props) {
                 <Error name="typeId" />
               </div>
               <div className="col-lg-2 col-xl-auto"></div>
-              <div className="buttons col-sm col-lg-6 col-xl-1">
+              <div className="buttons col-sm col-lg-6 col-xl-2 d-flex">
                 <button
+                  style={{ marginRight: '.5rem' }}
                   type="submit"
                   className="btn btn-success text-light text-nowrap overflow-hidden w-100"
                   disabled={submitting || invalid}>
@@ -163,7 +175,20 @@ function Mform(props) {
                       <span className="visually-hidden">Laddar...</span>
                     </div>
                   )}
-                  {!submitting && <span>Skapa</span>}
+                  {!submitting &&
+                    (props.meal.id ? (
+                      <span>Redigera</span>
+                    ) : (
+                      <span>Skapa</span>
+                    ))}
+                </button>
+                <button
+                  className="btn btn-danger text-light text-nowrap overflow-hidden w-100"
+                  style={{ marginLeft: '.5rem' }}
+                  type="button"
+                  onClick={form.reset && props.onMealEdit}
+                  disabled={submitting}>
+                  Rensa
                 </button>
               </div>
             </div>

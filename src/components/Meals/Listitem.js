@@ -50,17 +50,18 @@ function Listitem(props) {
         });
 
         const responseData = await response.json();
-        console.log(responseData);
         window.flash(responseData.message, 'success');
+        props.onMealDelete(values.id);
       } catch (error) {
         console.error(error);
         window.flash('Någonting gick fel: ' + error, 'danger');
       }
     } else if (values.action == 'edit') {
-      meal.edit = true;
-      props.onMealChange(meal);
+      meal.id = values.id;
+      props.onMealEdit(meal);
     }
   };
+
   return (
     <div className="d-flex justify-content-between pt-3 text-dark border-bottom">
       <div className="d-flex">
