@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 function Dashboard() {
   return (
     <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
-      <h6 className="border-bottom border-gray pb-2 mb-0">Förslag</h6>
+      <h2 className="h6 border-bottom border-gray pb-2 mb-0">Förslag</h2>
       <div className="media text-muted pt-3">
         <img
           data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1"

@@ -92,6 +92,7 @@ function Listitem(props) {
                   form.change('action', 'edit');
                 }}>
                 <EditRounded />
+                <span className="visually-hidden">Redigera</span>
               </button>
               <button
                 type="submit"
@@ -103,6 +104,7 @@ function Listitem(props) {
                     : null;
                 }}>
                 <DeleteRounded />
+                <span className="visually-hidden">Ta bort</span>
               </button>
             </form>
           )}

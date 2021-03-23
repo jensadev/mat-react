@@ -36,7 +36,7 @@ function App() {
 
   return (
     <Router history={history}>
-      <div id="app" className="h-100">
+      <div id="app" className="h-100 d-flex flex-column">
         <NavBar />
         <Switch>
           <Route path="/" exact component={Home} />
