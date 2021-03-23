@@ -1,41 +1,52 @@
+// import { useAuth0 } from '@auth0/auth0-react';
 import { useAuth0 } from '@auth0/auth0-react';
-import {
-  FirstPageRounded,
-  LastPageRounded,
-  NavigateBeforeRounded,
-  NavigateNextRounded
-} from '@material-ui/icons';
-import React, { Fragment, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { parseISO } from 'date-fns';
+import { Fragment, useEffect, useState } from 'react';
 
 import Dashbar from '../components/Dashbar';
+import Dashboard from '../components/Dashboard';
 // import Loading from '../components/Loading';
-import MealForm from '../components/MealForm';
-import MealsList from '../components/MealsList';
+import Mform from '../components/Meals/Form';
+import Mlist from '../components/Meals/List';
+import Listitem from '../components/Meals/Listitem';
 
-function Meals() {
-  const apiOrigin = 'http://localhost:8080/api';
-  // const [meals, setMeals] = useState([]);
-
-  // const [state, setState] = useState({
-  //   showResult: false,
-  //   apiMessage: '',
-  //   error: null
-  // });
-
+function M() {
+  const { getAccessTokenSilently } = useAuth0();
   const [pager, setPager] = useState({});
   const [pageOfItems, setPageOfItems] = useState([]);
-  // const [test, setTest] = useState(false);
-  const handleCallback = (childData) => {
-    // setTest(childData);
-    console.log(childData);
-    setPager({});
+  const [today] = useState(new Date());
+  const defaultMeal = {
+    date: today,
+    typeId: 3,
+    dish: ''
+  };
+  const [meal, setMeal] = useState(defaultMeal);
+
+  const handleMealEdit = (e) => {
+    console.log(e);
+    if (e.id) {
+      const m = {
+        id: e.id,
+        date: parseISO(e.date),
+        typeId: parseInt(e.typeId),
+        dish: e.dish
+      };
+      setMeal(m);
+    } else {
+      setMeal(defaultMeal);
+    }
   };
 
-  const { getAccessTokenSilently } = useAuth0();
+  const handleListUpdate = (e) => {
+    console.log(e);
+    if (e.dishId) setMeal(defaultMeal);
+    setPager({});
+    setPageOfItems([]);
+  };
 
   useEffect(() => {
     (async () => {
+      const apiOrigin = 'http://localhost:8080/api';
       const params = new URLSearchParams(location.search);
       const page = parseInt(params.get('page')) || 1;
       try {
@@ -61,133 +72,35 @@ function Meals() {
         console.error(error);
       }
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getAccessTokenSilently, pager.currentPage, location.search]);
+  }, [getAccessTokenSilently, pager]);
 
   return (
     <Fragment>
       <Dashbar />
       <main className="d-flex flex-column container mt-3">
         <div className="my-3">
-          <MealForm parentCallback={handleCallback} />
+          <Mform
+            meal={meal}
+            onMealUpdateOrCreate={handleListUpdate}
+            onMealEdit={handleMealEdit}
+          />
         </div>
-        <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
-          <h6 className="border-bottom border-gray pb-2 mb-0">
-            Senaste måltider
-          </h6>
-          <Fragment>
-            <MealsList meals={pageOfItems} />
-            <nav className="pt-3">
-              {pager.pages && pager.pages.length && (
-                <ul className="pagination justify-content-center">
-                  <li
-                    className={`page-item first-item ${
-                      pager.currentPage === 1 ? 'disabled' : ''
-                    }`}>
-                    <Link to={{ search: `?page=1` }} className="page-link">
-                      <FirstPageRounded />
-                    </Link>
-                  </li>
-                  <li
-                    className={`page-item previous-item ${
-                      pager.currentPage === 1 ? 'disabled' : ''
-                    }`}>
-                    <Link
-                      to={{ search: `?page=${pager.currentPage - 1}` }}
-                      className="page-link">
-                      <NavigateBeforeRounded />
-                    </Link>
-                  </li>
-                  {pager.pages.map((page) => (
-                    <li
-                      key={page}
-                      className={`page-item number-item ${
-                        pager.currentPage === page ? 'active' : ''
-                      }`}>
-                      <Link
-                        to={{ search: `?page=${page}` }}
-                        className="page-link">
-                        {page}
-                      </Link>
-                    </li>
-                  ))}
-                  <li
-                    className={`page-item next-item ${
-                      pager.currentPage === pager.totalPages ? 'disabled' : ''
-                    }`}>
-                    <Link
-                      to={{ search: `?page=${pager.currentPage + 1}` }}
-                      className="page-link">
-                      <NavigateNextRounded />
-                    </Link>
-                  </li>
-                  <li
-                    className={`page-item last-item ${
-                      pager.currentPage === pager.totalPages ? 'disabled' : ''
-                    }`}>
-                    <Link
-                      to={{ search: `?page=${pager.totalPages}` }}
-                      className="page-link">
-                      <LastPageRounded />
-                    </Link>
-                  </li>
-                </ul>
-              )}
-            </nav>
-          </Fragment>
-        </div>
-        <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
-          <h6 className="border-bottom border-gray pb-2 mb-0">Förslag</h6>
-          <div className="media text-muted pt-3">
-            <img
-              data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1"
-              alt=""
-              className="mr-2 rounded"
-            />
-            <div className="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <div className="d-flex justify-content-between align-items-center w-100">
-                <strong className="text-gray-dark">Full Name</strong>
-                <Link to="#">Follow</Link>
-              </div>
-              <span className="d-block">@username</span>
-            </div>
-          </div>
-          <div className="media text-muted pt-3">
-            <img
-              data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1"
-              alt=""
-              className="mr-2 rounded"
-            />
-            <div className="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <div className="d-flex justify-content-between align-items-center w-100">
-                <strong className="text-gray-dark">Full Name</strong>
-                <Link to="#">Follow</Link>
-              </div>
-              <span className="d-block">@username</span>
-            </div>
-          </div>
-          <div className="media text-muted pt-3">
-            <img
-              data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1"
-              alt=""
-              className="mr-2 rounded"
-            />
-            <div className="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <div className="d-flex justify-content-between align-items-center w-100">
-                <strong className="text-gray-dark">Full Name</strong>
-                <Link to="#">Follow</Link>
-              </div>
-              <span className="d-block">@username</span>
-            </div>
-          </div>
-          <small className="d-block text-right mt-3">
-            <Link to="#">All suggestions</Link>
-          </small>
-        </div>
+        <Mlist pager={pager}>
+          {pageOfItems.length > 0
+            ? pageOfItems.map((meal) => (
+                <Listitem
+                  key={meal.id}
+                  meal={meal}
+                  onMealDelete={handleListUpdate}
+                  onMealEdit={handleMealEdit}
+                />
+              ))
+            : 'Inga måltider'}
+        </Mlist>
+        <Dashboard />
       </main>
-      {/* <Footer /> */}
     </Fragment>
   );
 }
 
-export default Meals;
+export default M;

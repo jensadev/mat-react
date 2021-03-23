@@ -1,4 +1,4 @@
-// import './MealForm.scss';
+import './Form.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import { useAuth0 } from '@auth0/auth0-react';
@@ -9,7 +9,7 @@ import DatePicker, { registerLocale } from 'react-datepicker';
 registerLocale('sv', sv);
 import { Field, Form } from 'react-final-form';
 
-import DownshiftInput from '../DownshiftInput';
+import DownshiftInput from './DownshiftInput';
 
 function Mform(props) {
   const apiOrigin = 'http://localhost:8080/api';

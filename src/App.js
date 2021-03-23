@@ -17,7 +17,6 @@ import NavBar from './components/NavBar';
 import Bus from './utils/bus';
 import history from './utils/history';
 import Home from './views/Home';
-import M from './views/M';
 import Meals from './views/Meals';
 import Profile from './views/Profile';
 
@@ -43,7 +42,6 @@ function App() {
           <Route path="/" exact component={Home} />
           <ProtectedRoute path="/profile" component={Profile} />
           <ProtectedRoute path="/meals" component={Meals} />
-          <ProtectedRoute path="/m" component={M} />
         </Switch>
         <Footer />
         <div className="position-absolute bottom-0 end-0 m-4">
