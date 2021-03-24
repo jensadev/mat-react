@@ -10,7 +10,7 @@ import Mform from '../components/Meals/Form';
 import Mlist from '../components/Meals/List';
 import Listitem from '../components/Meals/Listitem';
 
-function M() {
+function Meals() {
   const { getAccessTokenSilently } = useAuth0();
   const [pager, setPager] = useState({});
   const [pageOfItems, setPageOfItems] = useState([]);
@@ -23,7 +23,7 @@ function M() {
   const [meal, setMeal] = useState(defaultMeal);
 
   const handleMealEdit = (e) => {
-    console.log(e);
+    // console.log(e);
     if (e.id) {
       const m = {
         id: e.id,
@@ -38,7 +38,7 @@ function M() {
   };
 
   const handleListUpdate = (e) => {
-    console.log(e);
+    // console.log(e);
     if (e.dishId) setMeal(defaultMeal);
     setPager({});
     setPageOfItems([]);
@@ -64,8 +64,12 @@ function M() {
           if (response.status == 200) {
             const responseData = await response.json();
 
-            setPager(responseData.pager);
-            setPageOfItems(responseData.pageOfItems);
+            // console.table(responseData.pager);
+            // console.table(responseData.pageOfItems);
+            if (!responseData.pager.totalItems == 0) {
+              setPager(responseData.pager);
+              setPageOfItems(responseData.pageOfItems);
+            }
           }
         }
       } catch (error) {
@@ -86,16 +90,18 @@ function M() {
           />
         </div>
         <Mlist pager={pager}>
-          {pageOfItems.length > 0
-            ? pageOfItems.map((meal) => (
-                <Listitem
-                  key={meal.id}
-                  meal={meal}
-                  onMealDelete={handleListUpdate}
-                  onMealEdit={handleMealEdit}
-                />
-              ))
-            : 'Inga måltider'}
+          {pageOfItems.length > 0 ? (
+            pageOfItems.map((meal) => (
+              <Listitem
+                key={meal.id}
+                meal={meal}
+                onMealDelete={handleListUpdate}
+                onMealEdit={handleMealEdit}
+              />
+            ))
+          ) : (
+            <div className="pt-3">Inga måltider</div>
+          )}
         </Mlist>
         <Dashboard />
       </main>
@@ -103,4 +109,4 @@ function M() {
   );
 }
 
-export default M;
+export default Meals;

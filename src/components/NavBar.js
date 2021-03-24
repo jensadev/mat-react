@@ -1,7 +1,11 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useAuth0 } from '@auth0/auth0-react';
-import { MenuOpenRounded, MenuRounded } from '@material-ui/icons';
+import {
+  ExitToAppRounded,
+  MenuOpenRounded,
+  MenuRounded
+} from '@material-ui/icons';
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
@@ -21,7 +25,7 @@ function NavBar() {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-primary bg-nav box-shadow text-uppercase">
+    <nav className="navbar navbar-expand-lg navbar-primary bg-nav box-shadow">
       <div className="container-fluid">
         <Link className="navbar-brand" to={'/'}>
           Brand
@@ -84,11 +88,18 @@ function NavBar() {
                     width="24"
                     height="24"
                   />
+                  <span className="ps-1">
+                    {isNavCollapsed ? '' : user.name}
+                  </span>
                 </a>
                 <ul
                   className="dropdown-menu dropdown-menu-end"
                   aria-labelledby="navbarDropdown">
-                  <li className="dropdown-item">{user.name}</li>
+                  {isNavCollapsed ? (
+                    <li className="dropdown-item">{user.name}</li>
+                  ) : (
+                    ''
+                  )}
                   <li>
                     <Link to="/profile" className="dropdown-item">
                       Min profil
@@ -102,7 +113,7 @@ function NavBar() {
                       className="btn btn-link"
                       id="qsLogoutBtn"
                       onClick={() => logoutWithRedirect()}>
-                      Logga ut
+                      <ExitToAppRounded /> Logga ut
                     </button>
                   </li>
                 </ul>

@@ -13,7 +13,28 @@ class Content extends Component {
             </p>
           </div>
           <div className="col-md-7">
-            <img src="/images/fisk.svg" alt="fisk" />
+            <figure className="figure w-100">
+              <img
+                src="/images/fisk.svg"
+                alt="fisk"
+                className="figure-img img-fluid"
+              />
+              <figcaption className="figure-caption text-end">
+                <a
+                  href="https://iconscout.com/illustrations/cooking-food"
+                  target="_blank"
+                  rel="noreferrer">
+                  Cooking food Illustration
+                </a>{' '}
+                by{' '}
+                <a
+                  href="https://iconscout.com/contributors/tribhuvansuthar"
+                  target="_blank"
+                  rel="noreferrer">
+                  Tribhuvan Suthar
+                </a>
+              </figcaption>
+            </figure>
           </div>
         </div>
       </main>
