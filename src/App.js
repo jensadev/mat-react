@@ -3,7 +3,7 @@ import './App.scss';
 import { useAuth0 } from '@auth0/auth0-react';
 // import { useAuth0 } from '@auth0/auth0-react';
 // import 'bootstrap/dist/css/bootstrap.min.css';
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import CookieConsent from 'react-cookie-consent';
 import { Route, Router, Switch } from 'react-router-dom';
 
@@ -16,10 +16,11 @@ import Loading from './components/Loading';
 import NavBar from './components/NavBar';
 import Bus from './utils/bus';
 import history from './utils/history';
-import Home from './views/Home';
-import Legal from './views/Legal';
-import Meals from './views/Meals';
-import Profile from './views/Profile';
+
+const Home = lazy(() => import('./views/Home'));
+const Meals = lazy(() => import('./views/Meals'));
+const Legal = lazy(() => import('./views/Legal'));
+const Profile = lazy(() => import('./views/Profile'));
 
 function App() {
   const { isLoading, error } = useAuth0();
@@ -40,10 +41,12 @@ function App() {
       <div id="app" className="h-100 d-flex flex-column">
         <NavBar />
         <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/legal" exact component={Legal} />
-          <ProtectedRoute path="/profile" component={Profile} />
-          <ProtectedRoute path="/meals" component={Meals} />
+          <Suspense fallback={<Loading />}>
+            <Route path="/" exact component={Home} />
+            <Route path="/legal" exact component={Legal} />
+            <ProtectedRoute path="/profile" component={Profile} />
+            <ProtectedRoute path="/meals" component={Meals} />
+          </Suspense>
         </Switch>
         <Footer />
         <div className="position-absolute bottom-0 end-0 m-4">
