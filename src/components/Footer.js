@@ -29,10 +29,7 @@ function Footer() {
           </a>
           <ul className="list-unstyled list-inline">
             <li className="list-inline-item">
-              <Link to="#">Sekretess</Link>
-            </li>
-            <li className="list-inline-item">
-              <Link to="#">Användarvillkor</Link>
+              <Link to="legal">Användarvillkor</Link>
             </li>
           </ul>
         </div>

@@ -17,6 +17,7 @@ import NavBar from './components/NavBar';
 import Bus from './utils/bus';
 import history from './utils/history';
 import Home from './views/Home';
+import Legal from './views/Legal';
 import Meals from './views/Meals';
 import Profile from './views/Profile';
 
@@ -40,6 +41,7 @@ function App() {
         <NavBar />
         <Switch>
           <Route path="/" exact component={Home} />
+          <Route path="/legal" exact component={Legal} />
           <ProtectedRoute path="/profile" component={Profile} />
           <ProtectedRoute path="/meals" component={Meals} />
         </Switch>
