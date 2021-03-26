@@ -4,7 +4,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useAuth0 } from '@auth0/auth0-react';
 import { format } from 'date-fns';
 import sv from 'date-fns/locale/sv';
-// import { useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 registerLocale('sv', sv);
 import { Field, Form } from 'react-final-form';
@@ -12,8 +11,7 @@ import { Field, Form } from 'react-final-form';
 import DownshiftInput from './DownshiftInput';
 
 function Mform(props) {
-  const apiOrigin = 'http://localhost:8080/api';
-  // const [meal] = useState(props.meal);
+  // const apiOrigin = 'http://localhost:8080/api';
   const { getAccessTokenSilently } = useAuth0();
   const DatePickerAdapter = ({ input: { onChange, value }, ...rest }) => (
     <DatePicker
@@ -27,7 +25,7 @@ function Mform(props) {
     try {
       const token = await getAccessTokenSilently();
 
-      const response = await fetch(`${apiOrigin}/meals`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/meals`, {
         method: props.meal.id ? 'PATCH' : 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +83,7 @@ function Mform(props) {
   );
 
   return (
-    <div className="p-3 bg-white rounded box-shadow text-dark">
+    <div className="p-3 bg-white rounded box-shadow">
       <Form
         initialValues={props.meal}
         onSubmit={onSubmit}
@@ -103,7 +101,7 @@ function Mform(props) {
               await handleSubmit(event).then(() => reset);
               form.reset();
             }}>
-            <div className="row gy-2 gx-3 align-items-center justify-content-md-between h6">
+            <div className="row gy-2 gx-3 align-items-center justify-content-md-between h5">
               <div className="col-sm-3 col-lg-2 col-xl-auto text-nowrap text-capitalize-first">
                 {values.date && format(values.date, 'eeee', { locale: sv })} den
               </div>
@@ -112,7 +110,7 @@ function Mform(props) {
                   datum
                 </label>
                 <Field
-                  className="form-control text-dark w-100"
+                  className="form-control w-100"
                   defaultValue={props.meal.date}
                   id="date"
                   name="date"
@@ -127,15 +125,14 @@ function Mform(props) {
                   ? 'ska jag äta'
                   : 'har jag ätit'}
               </div>
-              <div className="col-sm-9 col-lg-6 col-xl-4 position-relative">
+              <div className="col-sm-9 col-lg-6 col-xl-3 position-relative">
                 <label htmlFor="dish" className="form-label visually-hidden">
                   rätt
                 </label>
                 <Field
-                  className="form-control text-dark w-100"
+                  className="form-control w-100"
                   id="dish"
                   name="dish"
-                  // items={dishes ? dishes : []}
                   component={DownshiftInput}
                   placeholder="Skriv för att söka eller lägga till en rätt..."
                 />
@@ -151,7 +148,7 @@ function Mform(props) {
                   name="typeId"
                   component="select"
                   defaultValue="3"
-                  className="form-select text-dark w-100">
+                  className="form-select w-100">
                   <option value="1">Frukost</option>
                   <option value="2">Lunch</option>
                   <option value="3">Middag</option>
@@ -197,11 +194,6 @@ function Mform(props) {
       />
     </div>
   );
-  // const handleChange = (e) => {
-  //   props.onMealChange(e.target.value);
-  // };
-
-  // return <input value={props.meal} onChange={handleChange} />;
 }
 
 export default Mform;

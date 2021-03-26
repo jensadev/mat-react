@@ -1,11 +1,9 @@
-// import { useAuth0 } from '@auth0/auth0-react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { parseISO } from 'date-fns';
 import { Fragment, useEffect, useState } from 'react';
 
 import Dashbar from '../components/Dashbar';
 import Dashboard from '../components/Dashboard';
-// import Loading from '../components/Loading';
 import Mform from '../components/Meals/Form';
 import Mlist from '../components/Meals/List';
 import Listitem from '../components/Meals/Listitem';
@@ -46,14 +44,14 @@ function Meals() {
 
   useEffect(() => {
     (async () => {
-      const apiOrigin = 'http://localhost:8080/api';
+      // const apiOrigin = 'http://localhost:8080/api';
       const params = new URLSearchParams(location.search);
       const page = parseInt(params.get('page')) || 1;
       try {
         const token = await getAccessTokenSilently();
         if (page !== pager.currentPage) {
           const response = await fetch(
-            `${apiOrigin}/users/meals?page=${page}`,
+            `${process.env.REACT_APP_API_URL}/users/meals?page=${page}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`
