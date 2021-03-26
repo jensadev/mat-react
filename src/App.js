@@ -52,7 +52,6 @@ function App() {
         <div className="position-absolute bottom-0 end-0 m-4">
           <Flash />
         </div>
-        {/* <Logo /> */}
         <CookieConsent
           disableButtonStyles="true"
           buttonClasses="btn btn-light btn-outline-dark m-3"

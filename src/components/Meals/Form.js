@@ -101,7 +101,7 @@ function Mform(props) {
               await handleSubmit(event).then(() => reset);
               form.reset();
             }}>
-            <div className="row gy-2 gx-3 align-items-center justify-content-md-between h5">
+            <div className="row gy-2 gx-3 align-items-center justify-content-md-between h5 fw-normal">
               <div className="col-sm-3 col-lg-2 col-xl-auto text-nowrap text-capitalize-first">
                 {values.date && format(values.date, 'eeee', { locale: sv })} den
               </div>

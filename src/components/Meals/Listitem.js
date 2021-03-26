@@ -26,11 +26,11 @@ function Listitem(props) {
   const TypeIcon = (type) => {
     switch (type) {
       case 1:
-        return <FreeBreakfastRounded />;
+        return <FreeBreakfastRounded className="pe-1" fontSize="large" />;
       case 2:
-        return <FastfoodRounded />;
+        return <FastfoodRounded className="pe-1" fontSize="large" />;
       case 3:
-        return <RestaurantMenuRounded />;
+        return <RestaurantMenuRounded className="pe-1" fontSize="large" />;
       default:
         return 'tom';
     }
