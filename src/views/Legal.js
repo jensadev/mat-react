@@ -15,14 +15,6 @@ function Legal() {
           Eftersom vi respekterar din rätt till integritet, sparar vi enbart
           nödvändig data för sidans funktionalitet.
         </p>
-        <h3>Inloggning med Auth0</h3>
-        <p>
-          Den här webbplatsen använder <a href="https://auth0.com/">auth0</a>{' '}
-          för att ge dig en så säker och användbar tjänst som möjligt. Genom
-          auth0 ges möjlighet att logga in med andra plattformar. Om du delar
-          personuppgifter med de tjänster vi inte kontrollerar så är den parten
-          ansvarig för dina personuppgifter.
-        </p>
       </div>
       <div className="my-3 p-3 bg-white rounded box-shadow text-dark">
         <h1>Integritetspolicy</h1>

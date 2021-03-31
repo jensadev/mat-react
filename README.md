@@ -4,8 +4,8 @@ Consuming an api https://github.com/jensnti/mat
 
 ## TODO
 
-- [ ] Skip Auth0
-- [ ] Use own Auth
+- [x] Skip Auth0
+- [x] Use own Auth
 
 - [x] Fix empty mealslist spams api with request (l2useEffect properly)
 - [ ] Dashbarord
@@ -21,4 +21,4 @@ Consuming an api https://github.com/jensnti/mat
 - [ ] Contrast
 
 - [ ] Footer text
-- [ ] Terms
+- [x] Terms
