@@ -1,7 +1,7 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import { parseISO } from 'date-fns';
 import { Fragment, useEffect, useState } from 'react';
 
+import AuthService from '../auth/service';
 import Dashbar from '../components/Dashbar';
 import Dashboard from '../components/Dashboard';
 import Mform from '../components/Meals/Form';
@@ -9,7 +9,6 @@ import Mlist from '../components/Meals/List';
 import Listitem from '../components/Meals/Listitem';
 
 function Meals() {
-  const { getAccessTokenSilently } = useAuth0();
   const [pager, setPager] = useState({});
   const [pageOfItems, setPageOfItems] = useState([]);
   const [today] = useState(new Date());
@@ -19,7 +18,6 @@ function Meals() {
     dish: ''
   };
   const [meal, setMeal] = useState(defaultMeal);
-
   const handleMealEdit = (e) => {
     // console.log(e);
     if (e.id) {
@@ -44,17 +42,17 @@ function Meals() {
 
   useEffect(() => {
     (async () => {
+      const user = AuthService.getCurrentUser();
       // const apiOrigin = 'http://localhost:8080/api';
       const params = new URLSearchParams(location.search);
       const page = parseInt(params.get('page')) || 1;
       try {
-        const token = await getAccessTokenSilently();
         if (page !== pager.currentPage) {
           const response = await fetch(
             `${process.env.REACT_APP_API_URL}/users/meals?page=${page}`,
             {
               headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${user.token}`
               }
             }
           );
@@ -74,7 +72,7 @@ function Meals() {
         console.error(error);
       }
     })();
-  }, [getAccessTokenSilently, pager]);
+  }, [pager]);
 
   return (
     <Fragment>

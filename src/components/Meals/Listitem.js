@@ -1,6 +1,5 @@
 import './Listitem.scss';
 
-import { useAuth0 } from '@auth0/auth0-react';
 import {
   // DeleteOutlineRounded,
   DeleteRounded,
@@ -12,6 +11,7 @@ import {
 import { useState } from 'react';
 import { Field, Form } from 'react-final-form';
 
+import AuthService from '../../auth/service';
 // import { Redirect } from 'react-router-dom';
 import Date from '../Date';
 
@@ -36,18 +36,17 @@ function Listitem(props) {
     }
   };
 
-  const { getAccessTokenSilently } = useAuth0();
   const onSubmit = async (values) => {
     const apiOrigin = 'http://localhost:8080/api';
     if (values.action == 'delete') {
       try {
-        const token = await getAccessTokenSilently();
+        const user = AuthService.getCurrentUser();
 
         const response = await fetch(`${apiOrigin}/meals/${values.id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${user.token}`
           }
         });
 

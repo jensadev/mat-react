@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useAuth0 } from '@auth0/auth0-react';
 import {
   ExitToAppRounded,
   MenuOpenRounded,
@@ -9,19 +8,19 @@ import {
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
+import AuthService from '../auth/service';
+
 function NavBar() {
-  const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
   const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
   // const [isProfileCollapsed, setIsProfileCollapsed] = useState(false);
   // const handleProfileCollapse = () =>
   //   setIsProfileCollapsed(!isProfileCollapsed);
+  const user = AuthService.getCurrentUser();
 
   const logoutWithRedirect = () => {
-    localStorage.clear('uid');
-    logout({
-      returnTo: window.location.origin
-    });
+    AuthService.logout();
+    window.location.origin;
   };
 
   return (
@@ -54,7 +53,7 @@ function NavBar() {
                 Start
               </Link>
             </li>
-            {isAuthenticated && (
+            {user && (
               <li className="nav-item">
                 <Link tag={NavLink} to="/meals" className="nav-link">
                   Måltider
@@ -63,17 +62,14 @@ function NavBar() {
             )}
           </ul>
           <ul className="navbar-nav">
-            {!isAuthenticated && (
+            {!user && (
               <li className="nav-item">
-                <button
-                  id="qsLoginBtn"
-                  className="btn btn-primary"
-                  onClick={() => loginWithRedirect()}>
+                <Link className="btn btn-primary" to="/login">
                   Logga in
-                </button>
+                </Link>
               </li>
             )}
-            {isAuthenticated && (
+            {user && (
               <li className="nav-item dropdown">
                 <a
                   role="button"
@@ -111,7 +107,6 @@ function NavBar() {
                   <li>
                     <button
                       className="btn btn-link"
-                      id="qsLogoutBtn"
                       onClick={() => logoutWithRedirect()}>
                       <ExitToAppRounded /> Logga ut
                     </button>

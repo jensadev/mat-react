@@ -1,18 +1,17 @@
 import './Form.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { useAuth0 } from '@auth0/auth0-react';
 import { format } from 'date-fns';
 import sv from 'date-fns/locale/sv';
 import DatePicker, { registerLocale } from 'react-datepicker';
 registerLocale('sv', sv);
 import { Field, Form } from 'react-final-form';
 
+import AuthService from '../../auth/service';
 import DownshiftInput from './DownshiftInput';
 
 function Mform(props) {
   // const apiOrigin = 'http://localhost:8080/api';
-  const { getAccessTokenSilently } = useAuth0();
   const DatePickerAdapter = ({ input: { onChange, value }, ...rest }) => (
     <DatePicker
       selected={value}
@@ -23,13 +22,13 @@ function Mform(props) {
 
   const onSubmit = async (values) => {
     try {
-      const token = await getAccessTokenSilently();
+      const user = AuthService.getCurrentUser();
 
       const response = await fetch(`${process.env.REACT_APP_API_URL}/meals`, {
         method: props.meal.id ? 'PATCH' : 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${user.token}`
         },
         body: JSON.stringify(values)
       });

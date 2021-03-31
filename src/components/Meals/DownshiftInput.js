@@ -1,10 +1,12 @@
 import './DownshiftInput.scss';
 
-import { useAuth0 } from '@auth0/auth0-react';
 import Downshift from 'downshift';
 import { matchSorter } from 'match-sorter';
 import React from 'react';
 import { useEffect, useState } from 'react';
+
+import AuthService from '../../auth/service';
+
 const itemToString = (item) => (item ? item : '');
 
 // eslint-disable-next-line no-unused-vars
@@ -12,45 +14,27 @@ function DownshiftInput({ input, meta, placeholder, items, ...rest }) {
   const [dishes, setDishes] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const apiOrigin = 'http://localhost:8080/api';
-  // const [state, setState] = useState({
-  //   showResult: false,
-  //   apiMessage: '',
-  //   error: null
-  // });
-
-  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     (async () => {
+      const user = AuthService.getCurrentUser();
       try {
-        const token = await getAccessTokenSilently();
-
         const response = await fetch(`${apiOrigin}/users/dishes`, {
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${user.token}`
           }
         });
 
         const responseData = await response.json();
 
-        // console.table(responseData);
         if (responseData) {
           setDishes(responseData.dishes);
         }
-        // setState({
-        //   ...state,
-        //   showResult: responseData == false ? false : true,
-        //   apiMessage: responseData
-        // });
       } catch (error) {
         console.log(error);
-        // setState({
-        //   ...state,
-        //   error: error.error
-        // });
       }
     })();
-  }, [getAccessTokenSilently]);
+  }, []);
 
   const filterItems = (inputValue) => {
     // console.log(dishes);
