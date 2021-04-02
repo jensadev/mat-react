@@ -21,6 +21,7 @@ function Mform(props) {
   );
 
   const onSubmit = async (values) => {
+    console.table(JSON.stringify({ meal: values }));
     try {
       const user = AuthService.getCurrentUser();
 
@@ -30,7 +31,7 @@ function Mform(props) {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${user.token}`
         },
-        body: JSON.stringify(values)
+        body: JSON.stringify({ meal: values })
       });
 
       const responseData = await response.json();
