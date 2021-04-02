@@ -4,7 +4,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/icons": "^4.11.2",
+    "@emotion/react": "^11.1.5",
+    "@emotion/styled": "^11.1.5",
+    "@material-ui/icons": "^5.0.0-alpha.28",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.1",

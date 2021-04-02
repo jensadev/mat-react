@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 
-import AuthService from './service';
+import AuthService from '../services/auth';
 
 function PrivateRoute({ component: Component, ...rest }) {
   // Add your own authentication on the below line.

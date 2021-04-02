@@ -8,7 +8,7 @@ import {
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
-import AuthService from '../auth/service';
+import AuthService from '../services/auth';
 
 function NavBar() {
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
@@ -19,8 +19,10 @@ function NavBar() {
   const user = AuthService.getCurrentUser();
 
   const logoutWithRedirect = () => {
-    AuthService.logout();
-    window.location.origin;
+    if (AuthService.logout()) {
+      // props.history.push('/');
+      window.location.reload();
+    }
   };
 
   return (

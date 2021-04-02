@@ -5,7 +5,7 @@ import { matchSorter } from 'match-sorter';
 import React from 'react';
 import { useEffect, useState } from 'react';
 
-import AuthService from '../../auth/service';
+import DishService from '../../services/dish';
 
 const itemToString = (item) => (item ? item : '');
 
@@ -13,23 +13,20 @@ const itemToString = (item) => (item ? item : '');
 function DownshiftInput({ input, meta, placeholder, items, ...rest }) {
   const [dishes, setDishes] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
-  const apiOrigin = 'http://localhost:8080/api';
 
   useEffect(() => {
     (async () => {
-      const user = AuthService.getCurrentUser();
       try {
-        const response = await fetch(`${apiOrigin}/users/dishes`, {
-          headers: {
-            Authorization: `Bearer ${user.token}`
+        DishService.index().then(
+          (res) => {
+            if (res.dishes) {
+              setDishes(res.dishes);
+            }
+          },
+          (error) => {
+            console.log(error);
           }
-        });
-
-        const responseData = await response.json();
-
-        if (responseData) {
-          setDishes(responseData.dishes);
-        }
+        );
       } catch (error) {
         console.log(error);
       }

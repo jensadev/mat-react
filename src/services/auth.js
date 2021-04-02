@@ -1,16 +1,18 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/users/';
-
 function register(user) {
-  return axios.post(API_URL, {
-    user
-  });
+  return axios
+    .post(process.env.REACT_APP_API_URL + '/users', {
+      user
+    })
+    .then((response) => {
+      return response.data;
+    });
 }
 
 function login(user) {
   return axios
-    .post(API_URL + 'login', {
+    .post(process.env.REACT_APP_API_URL + '/users/login', {
       user
     })
     .then((response) => {
@@ -18,7 +20,6 @@ function login(user) {
         // dont save to localstorage
         localStorage.setItem('user', JSON.stringify(response.data.user));
       }
-
       return response.data;
     });
 }
@@ -26,12 +27,16 @@ function login(user) {
 function logout() {
   // dont save to localstorage
   localStorage.removeItem('user');
+  if (localStorage.getItem('user') === null) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 function getCurrentUser() {
   // dont save to localstorage
   const user = JSON.parse(localStorage.getItem('user'));
-  console.table(user);
   return user;
 }
 

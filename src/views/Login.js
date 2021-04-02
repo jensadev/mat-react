@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import AuthService from '../auth/service';
+import AuthService from '../services/auth';
 
-function SignIn(props) {
+function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -38,21 +38,6 @@ function SignIn(props) {
         setLoading(false);
       }
     );
-    //   () => {
-    //     props.history.push('/profile');
-    //     window.location.reload();
-    //   },
-    //   (error) => {
-    //     const resMessage =
-    //       (error.response &&
-    //         error.response.data &&
-    //         error.response.data.message) ||
-    //       error.message ||
-    //       error.toString();
-
-    //     setLoading(false);
-    //     setMessage(resMessage);
-    //   }
   };
 
   return (
@@ -109,4 +94,4 @@ function SignIn(props) {
   );
 }
 
-export default SignIn;
+export default Login;

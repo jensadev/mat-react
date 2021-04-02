@@ -2,17 +2,16 @@ import './Listitem.scss';
 
 import {
   // DeleteOutlineRounded,
+  BentoRounded,
   DeleteRounded,
+  DinnerDiningRounded,
   EditRounded,
-  FastfoodRounded,
-  FreeBreakfastRounded,
-  RestaurantMenuRounded
+  FreeBreakfastRounded
 } from '@material-ui/icons';
 import { useState } from 'react';
 import { Field, Form } from 'react-final-form';
 
-import AuthService from '../../auth/service';
-// import { Redirect } from 'react-router-dom';
+import MealService from '../../services/meal';
 import Date from '../Date';
 
 function Listitem(props) {
@@ -26,33 +25,41 @@ function Listitem(props) {
   const TypeIcon = (type) => {
     switch (type) {
       case 1:
-        return <FreeBreakfastRounded className="pe-1" fontSize="large" />;
+        return <FreeBreakfastRounded fontSize="large" />;
       case 2:
-        return <FastfoodRounded className="pe-1" fontSize="large" />;
+        return <BentoRounded fontSize="large" />;
       case 3:
-        return <RestaurantMenuRounded className="pe-1" fontSize="large" />;
+        return <DinnerDiningRounded fontSize="large" />;
       default:
         return 'tom';
     }
   };
 
   const onSubmit = async (values) => {
-    const apiOrigin = 'http://localhost:8080/api';
     if (values.action == 'delete') {
       try {
-        const user = AuthService.getCurrentUser();
-
-        const response = await fetch(`${apiOrigin}/meals/${values.id}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.token}`
+        MealService.destroy(values.id).then(
+          (res) => {
+            window.flash(res.message, 'success');
+            props.onMealDelete(values.id);
+          },
+          (error) => {
+            console.log(error);
           }
-        });
+        );
+        // const user = AuthService.getCurrentUser();
 
-        const responseData = await response.json();
-        window.flash(responseData.message, 'success');
-        props.onMealDelete(values.id);
+        // const response = await fetch(`${apiOrigin}/meals/${values.id}`, {
+        //   method: 'DELETE',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //     Authorization: `Bearer ${user.token}`
+        //   }
+        // });
+
+        // const responseData = await response.json();
+        // window.flash(responseData.message, 'success');
+        // props.onMealDelete(values.id);
       } catch (error) {
         console.error(error);
         window.flash('Någonting gick fel: ' + error, 'danger');
@@ -67,7 +74,7 @@ function Listitem(props) {
     <div className="d-flex justify-content-between pt-3 text-dark border-bottom">
       <div className="d-flex">
         <div className="mealicon">{TypeIcon(meal.typeId)}</div>
-        <p className="pb-3 mb-0 lh-sm text-dark">
+        <p className="pb-3 ps-2 mb-0 lh-sm text-dark">
           <Date classes={'d-block small text-muted'} dateString={meal.date} />
           {meal.dish}
         </p>

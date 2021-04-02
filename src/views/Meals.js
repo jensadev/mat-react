@@ -1,17 +1,19 @@
 import { parseISO } from 'date-fns';
 import { Fragment, useEffect, useState } from 'react';
 
-import AuthService from '../auth/service';
 import Dashbar from '../components/Dashbar';
 import Dashboard from '../components/Dashboard';
+import Loading from '../components/Loading';
 import Mform from '../components/Meals/Form';
 import Mlist from '../components/Meals/List';
 import Listitem from '../components/Meals/Listitem';
+import MealService from '../services/meal';
 
 function Meals() {
   const [pager, setPager] = useState({});
   const [pageOfItems, setPageOfItems] = useState([]);
   const [today] = useState(new Date());
+
   const defaultMeal = {
     date: today,
     typeId: 3,
@@ -42,34 +44,28 @@ function Meals() {
 
   useEffect(() => {
     (async () => {
-      const user = AuthService.getCurrentUser();
+      // const user = AuthService.getCurrentUser();
       // const apiOrigin = 'http://localhost:8080/api';
       const params = new URLSearchParams(location.search);
       const page = parseInt(params.get('page')) || 1;
       try {
         if (page !== pager.currentPage) {
-          const response = await fetch(
-            `${process.env.REACT_APP_API_URL}/users/meals?page=${page}`,
-            {
-              headers: {
-                Authorization: `Bearer ${user.token}`
+          MealService.index(page).then(
+            (res) => {
+              if (res.pager) {
+                if (!res.pager.totalItems == 0) {
+                  setPager(res.pager);
+                  setPageOfItems(res.pageOfItems);
+                }
               }
+            },
+            (error) => {
+              console.log(error);
             }
           );
-
-          if (response.status == 200) {
-            const responseData = await response.json();
-
-            // console.table(responseData.pager);
-            // console.table(responseData.pageOfItems);
-            if (!responseData.pager.totalItems == 0) {
-              setPager(responseData.pager);
-              setPageOfItems(responseData.pageOfItems);
-            }
-          }
         }
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     })();
   }, [pager]);
@@ -96,7 +92,10 @@ function Meals() {
               />
             ))
           ) : (
-            <div className="pt-3">Inga måltider</div>
+            <Fragment>
+              <div className="pt-3">Inga måltider</div>
+              <Loading />
+            </Fragment>
           )}
         </Mlist>
         <Dashboard />

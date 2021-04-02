@@ -8,17 +8,6 @@ import {
 import { Link } from 'react-router-dom';
 
 function Pagination(props) {
-  // const [pager] = useState(props.pager);
-
-  // console.log(props);
-
-  // const location = useLocation();
-
-  // useEffect(() => {
-  //   // runs on location, i.e. route, change
-  //   console.log('handle route change here', location);
-  // }, [location]);
-
   return (
     <nav className="pt-3">
       {props.pager.pages && props.pager.pages.length && (

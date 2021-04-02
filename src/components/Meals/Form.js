@@ -5,13 +5,13 @@ import { format } from 'date-fns';
 import sv from 'date-fns/locale/sv';
 import DatePicker, { registerLocale } from 'react-datepicker';
 registerLocale('sv', sv);
+
 import { Field, Form } from 'react-final-form';
 
-import AuthService from '../../auth/service';
+import MealService from '../../services/meal';
 import DownshiftInput from './DownshiftInput';
 
 function Mform(props) {
-  // const apiOrigin = 'http://localhost:8080/api';
   const DatePickerAdapter = ({ input: { onChange, value }, ...rest }) => (
     <DatePicker
       selected={value}
@@ -22,27 +22,40 @@ function Mform(props) {
 
   const onSubmit = async (values) => {
     try {
-      const user = AuthService.getCurrentUser();
-
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/meals`, {
-        method: props.meal.id ? 'PATCH' : 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.token}`
-        },
-        body: JSON.stringify({ meal: values })
-      });
-
-      const responseData = await response.json();
-      if (responseData.meal) {
-        window.flash(`Måltiden skapad, ${responseData.meal.id}`, 'success');
-      } else if (responseData.updatedMeal) {
-        window.flash(
-          `Måltiden uppdaterad, ${responseData.updatedMeal.id}`,
-          'success'
+      let meal = {
+        date: values.date,
+        typeId: values.typeId,
+        dish: values.dish
+      };
+      if (props.meal.id) {
+        meal.id = props.meal.id;
+        MealService.update(meal).then(
+          (res) => {
+            if (res.updatedMeal) {
+              window.flash(
+                `Måltiden uppdaterad, ${res.updatedMeal.id}`,
+                'success'
+              );
+              props.onMealUpdateOrCreate(res.updatedMeal);
+            }
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      } else {
+        MealService.create(meal).then(
+          (res) => {
+            if (res.meal) {
+              window.flash(`Måltiden skapad, ${res.meal.id}`, 'success');
+              props.onMealUpdateOrCreate(res.meal);
+            }
+          },
+          (error) => {
+            console.log(error);
+          }
         );
       }
-      props.onMealUpdateOrCreate(responseData.meal || responseData.updatedMeal);
     } catch (error) {
       console.error(error);
       window.flash('Någonting gick fel: ' + error, 'danger');
