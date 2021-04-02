@@ -22,7 +22,11 @@ function SignIn(props) {
     e.preventDefault();
 
     setLoading(true);
-    AuthService.login(email, password).then(
+    const user = {
+      email: email,
+      password: password
+    };
+    AuthService.login(user).then(
       (res) => {
         console.log(res);
         setLoading(false);

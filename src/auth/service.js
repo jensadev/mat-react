@@ -2,19 +2,16 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/api/users/';
 
-function register(email, password, confirmPassword) {
+function register(user) {
   return axios.post(API_URL, {
-    email,
-    password,
-    confirmPassword
+    user
   });
 }
 
-function login(email, password) {
+function login(user) {
   return axios
     .post(API_URL + 'login', {
-      email,
-      password
+      user
     })
     .then((response) => {
       if (response.data.user.token) {

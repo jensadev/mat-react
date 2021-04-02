@@ -21,7 +21,6 @@ function Mform(props) {
   );
 
   const onSubmit = async (values) => {
-    console.table(JSON.stringify({ meal: values }));
     try {
       const user = AuthService.getCurrentUser();
 
