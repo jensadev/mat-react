@@ -9,19 +9,18 @@ import Mlist from '../components/Meals/List';
 import Listitem from '../components/Meals/Listitem';
 import MealService from '../services/meal';
 
-function Meals() {
+function Meals(props) {
   const [pager, setPager] = useState({});
   const [pageOfItems, setPageOfItems] = useState([]);
   const [today] = useState(new Date());
-
   const defaultMeal = {
     date: today,
     typeId: 3,
     dish: ''
   };
   const [meal, setMeal] = useState(defaultMeal);
+
   const handleMealEdit = (e) => {
-    // console.log(e);
     if (e.id) {
       const m = {
         id: e.id,
@@ -36,7 +35,6 @@ function Meals() {
   };
 
   const handleListUpdate = (e) => {
-    // console.log(e);
     if (e.dishId) setMeal(defaultMeal);
     setPager({});
     setPageOfItems([]);
@@ -44,8 +42,6 @@ function Meals() {
 
   useEffect(() => {
     (async () => {
-      // const user = AuthService.getCurrentUser();
-      // const apiOrigin = 'http://localhost:8080/api';
       const params = new URLSearchParams(location.search);
       const page = parseInt(params.get('page')) || 1;
       try {
@@ -68,7 +64,7 @@ function Meals() {
         console.log(error);
       }
     })();
-  }, [pager]);
+  }, [pager, props.location.search]);
 
   return (
     <Fragment>
