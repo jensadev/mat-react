@@ -1,4 +1,5 @@
 import axios from 'axios';
+// import { Redirect } from 'react-router-dom';
 
 function register(user) {
   return axios
@@ -16,11 +17,13 @@ function login(user) {
       user
     })
     .then((response) => {
-      if (response.data.user.token) {
-        // dont save to localstorage
+      if (response.data.errors) {
+        console.table(response.data.errors.body);
+        return response.data.errors;
+      } else if (response.data.user.token) {
         localStorage.setItem('user', JSON.stringify(response.data.user));
+        return true;
       }
-      return response.data;
     });
 }
 

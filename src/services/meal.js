@@ -3,14 +3,17 @@ import axios from 'axios';
 import AuthService from './auth';
 
 const user = AuthService.getCurrentUser();
+let instance;
 
-const instance = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${user.token}`
-  }
-});
+if (user) {
+  instance = axios.create({
+    baseURL: process.env.REACT_APP_API_URL,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${user.token}`
+    }
+  });
+}
 
 function index(page) {
   return instance.get('/users/meals?page=' + page).then((response) => {
